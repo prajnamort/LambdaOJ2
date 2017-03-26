@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
 
     'django_extensions',
+    'rest_framework',
+
     'main',
 ]
 
