@@ -1,0 +1,26 @@
+{
+    "name": "LambdaOJ2",
+    "version": "1.0.0",
+    "description": "...",
+    "main": "app.js",
+    "private": true,
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "fe": "gulp default"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/volving/LambdaOJ2.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/volving/LambdaOJ2/issues"
+    },
+    "homepage": "https://github.com/volving/LambdaOJ2#readme",
+    "dependencies": {
+        "del": "^2.2.2",
+        "gulp": "^3.9.1"
+    }
+}
