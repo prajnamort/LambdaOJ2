@@ -103,3 +103,18 @@ workon LambdaOJ2
 
 * 挂起： `vagrant suspend`
 * 关闭： `vagrant halt`
+
+
+
+## 前端文件部署
+
+切换到项目根目录
+1. 使用`npm install`或`yarn install`来安装依赖(推荐后者:速度快, 提示信息显得优雅)
+2. `npm run fe`:部署前端文件
+
+
+
+### 如果系统没有安装`Node.js`和`NPM`,
+
+推荐先安装[NVM, Node Version Manager](https://github.com/creationix/nvm/blob/master/README.markdown), 利用`NVM`安装/管理不同版本的`Node.js`,
+安装Node.js v7.5.0: `nvm install v7.5.0`, 此时`NPM`顺带安装了, 便可使用`npm ***`的上述命令了
