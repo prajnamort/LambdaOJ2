@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="http://lambda.cool/favicon.ico" type="image/vnd.microsoft.icon">
+    <link rel="icon" href="http://lambda.cool/favicon.ico" type="image/vnd.microsoft.icon">
+    <link href="/static/styles/style.css" type="text/css" rel="stylesheet" />
+    <script src="/static/scripts/highlight.pack.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script>
+    <title>LAMBDA.COOL</title>
+</head>
+
+<body>
+    <div id="mainnav">
+        <div class="wrapper">
+            <span class="logo">LAMBDA.COOL</span>
+            <a href="/" class="now">Home</a>
+            <a href="/oj/">Online Judge</a>
+            <!-- <a href="/wiki/">Wiki</a> -->
+            <!-- <a href="http://git.lambda.cool/">GitLab</a> -->
+        </div>
+    </div>
+
+    <div class="wrapper">
+
+        <div id="content">
+
+            <article class="title">
+                <pre><code class="lisp">;;;; LAMBDA.COOL</code></pre>
+            </article>
+
+            <article class="left">
+                <pre><code class="lisp">;;; ETHICS
+
+(define ethics
+  '("Sharing"
+    "Openness"
+    "Decentralization"
+    "Hacking, not just tool using."
+    "Learn to unlearn. Unlearn to learn."))</code></pre>
+            </article>
+
+            <article class="right">
+                <pre><code class="lisp">;;; SERVICES
+
+(define our-services
+  (list
+    (cons '<a href="/oj/">Online-Judge</a>
+          "Coder's Battle Field.")))</code></pre>
+                <!-- (cons '<a href="/wiki/">Wiki</a> -->
+                <!--          "Knowledge Sharing.") -->
+                <!-- (cons '<a href="http://git.lambda.cool/">GitLab</a> -->
+                <!--          "Open Source Contribution.")))</code></pre> -->
+            </article>
+
+            <article class="left">
+                <pre><code class="lisp">;;; WHY COOL
+
+(define Y
+  (lambda (f)
+    ((lambda (x) (x x))
+     (lambda (g)
+       (f (lambda args
+            (apply (g g) args)))))))</code></pre>
+            </article>
+
+            <article class="right">
+                <pre><code class="lisp">;;; CONTACT
+
+(define our-email
+  "<a href="mailto:lambdacool@googlegroups.com">lambdacool@googlegroups.com</a>")</code></pre>
+            </article>
+
+        </div>
+    </div>
+
+</body>
+
+</html>
