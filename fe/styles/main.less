@@ -1,0 +1,169 @@
+body,
+div,
+header,
+li,
+p,
+ul {
+    margin: 0;
+    padding: auto;
+}
+@tsThemeBGColor: #5C307D;
+@tsThemeBGColorLight: lightness(@tsThemeBGColor);
+@tsThemeColor: #FFC600;
+@navLinkActiveColor: @tsThemeColor;
+@themeBgColor: #D5D5D5;
+
+.apple() {
+    box-shadow: 0 0 2.5em #5d656c;
+}
+
+.top-bar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: @tsThemeBGColor;
+
+    .menu {
+        background-color: @tsThemeBGColor;
+
+        .menu-text {
+            color: white;
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+        .submenu {
+            border: none;
+            .apple();
+        }
+    }
+    padding: 0.6em;
+
+    a[href] {
+        color: white;
+        display: inline-block;
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: bold;
+
+        &:hover {
+            color: @navLinkActiveColor;
+        }
+        transition: 0.2s color ease-in-out;
+
+        &:not(:last-child) {
+            margin-right: 1em;
+        }
+
+        &.active {
+            color: @navLinkActiveColor;
+        }
+    }
+}
+
+.content {
+    margin-top: 4rem;
+}
+
+.logPage {
+    margin-top: 5rem;
+
+    form {
+        .apple();
+        padding: 1rem 3em 2em;
+        position: relative;
+        border-radius: 0.75rem;
+
+        .bg {
+            border-radius: 0.75rem;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(-1deg, @tsThemeBGColor, lighten(@tsThemeBGColor, 10%));
+            z-index: -1;
+        }
+
+        h2,
+        p {
+            color: white;
+        }
+
+        p {
+            font-size: 0.8em;
+        }
+
+        input {
+            border-radius: 0.25rem;
+            // margin-bottom: 0;
+            margin-top: 1em;
+
+            &:last-child {
+                margin-bottom: 1em;
+            }
+        }
+
+        label {
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .button {
+            color: white;
+            font-weight: bold;
+            border-radius: 0.25rem;
+        }
+    }
+}
+
+.problemsPage {
+    .problemItem {
+        margin-bottom: 0.25em;
+        display: flex;
+        flex-direction: column;
+
+        a {
+            flex-grow: 1;
+            display: inline-block;
+            min-height: 2em;
+            line-height: 2em;
+            background-color: @themeBgColor;
+            color: black;
+            padding: 0 0.5rem;
+
+            &:hover {
+                background-color: lighten(@themeBgColor, 10%);
+            }
+            transition: background-color 0.3s ease-in-out;
+
+            .sn {
+                color: @tsThemeColor;
+                display: inline-block;
+                min-width: 2em;
+                height: 2em;
+                text-align: center;
+                line-height: 2em;
+                background-color: @tsThemeBGColor;
+                margin-right: 0.5em;
+                margin-left: -0.5rem;
+                padding: 0 0.5em;
+            }
+        }
+    }
+}
+
+.submitPage {
+    margin-top: 5rem;
+    form {
+        .inputGroup {
+            display: flex;
+            align-items: stretch;
+            justify-content: space-between;
+            text-align: left;
+            * {
+                flex-grow: 1;
+            }
+        }
+    }
+}
