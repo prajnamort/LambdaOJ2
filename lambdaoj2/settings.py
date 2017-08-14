@@ -35,8 +35,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
 
-    'django_extensions',
     'rest_framework',
+    'rest_framework_swagger',
+    'django_extensions',
 
     'main',
 ]
@@ -77,7 +78,7 @@ WSGI_APPLICATION = 'lambdaoj2.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': SECRETS['pgsql_db_name'],
         'HOST': SECRETS['pgsql_db_host'],
         'PORT': SECRETS['pgsql_db_port'],
@@ -133,9 +134,19 @@ STATIC_URL = '/static/'
 # Django Rest Framework
 
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'lambdaoj2.pagination.CustomPageNumberPagination',
+    'PAGE_SIZE': 10,
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
+}
+
+
+# Django Rest Swagger
+
+SWAGGER_SETTINGS = {
+    'DOC_EXPANSION': 'list',
 }
