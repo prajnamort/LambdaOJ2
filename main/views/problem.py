@@ -1,9 +1,14 @@
-from rest_framework import routers, serializers, viewsets
+from rest_framework import generics
 
 from main.models import Problem
 from main.serializers import ProblemSerializer
 
 
-class ProblemViewSet(viewsets.ModelViewSet):
+class ProblemList(generics.ListAPIView):
+    queryset = Problem.objects.all()
+    serializer_class = ProblemSerializer
+
+
+class ProblemDetail(generics.RetrieveAPIView):
     queryset = Problem.objects.all()
     serializer_class = ProblemSerializer
