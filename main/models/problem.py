@@ -60,3 +60,6 @@ class Problem(models.Model):
     create_time = models.DateTimeField(
         verbose_name='创建时间',
         default=timezone.now,)
+
+    def __str__(self):
+        return self.title

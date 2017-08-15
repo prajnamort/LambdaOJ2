@@ -8,4 +8,5 @@ from rest_framework.response import Response
 def api_root(request, format=None):
     return Response({
         'problems': reverse('problem-list', request=request, format=format),
+        'submits': reverse('submit-list', request=request, format=format),
     })
