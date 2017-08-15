@@ -8,9 +8,7 @@ from django.utils import timezone
 
 
 class Problem(models.Model):
-    """
-    题目。
-    """
+    """题目"""
 
     class Meta:
         verbose_name = '题目'
