@@ -6,7 +6,7 @@ from main.models import Problem
 class ProblemSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Problem
-        fields = ('id', 'order', 'title', 'time_limit', 'memory_limit',
+        fields = ('id', 'number', 'title', 'time_limit', 'memory_limit',
                   'desc', 'input_desc', 'output_desc',
                   'input_sample', 'output_sample', 'hint',
                   'sample_num', 'deadline', 'released', 'contributor',

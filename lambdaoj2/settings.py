@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_swagger',
     'django_extensions',
+    'ckeditor',
+    'ckeditor_uploader',
 
     'main',
 ]
@@ -129,6 +131,87 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = SECRETS['static_root']
+
+
+# Media files
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = SECRETS['media_root']
+
+
+# CKEditor
+
+CKEDITOR_UPLOAD_PATH = 'ckeditor_uploads/'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'font_names': '宋体/宋体;黑体/黑体;仿宋/仿宋_GB2312;楷体/楷体_GB2312;隶书/隶书;幼圆/幼圆;微软雅黑/微软雅黑',
+        'toolbar_Full': [
+            {'name': 'document',
+             'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
+            {'name': 'clipboard',
+             'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
+            {'name': 'editing',
+             'items': ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt']},
+            {'name': 'forms',
+             'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select',
+                       'Button', 'ImageButton', 'HiddenField']},
+            '/',
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript',
+                       '-', 'RemoveFormat']},
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-',
+                       'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter',
+                       'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language']},
+            {'name': 'links',
+             'items': ['Link', 'Unlink', 'Anchor']},
+            {'name': 'insert',
+             'items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley',
+                       'SpecialChar', 'PageBreak', 'Iframe']},
+            '/',
+            {'name': 'styles',
+             'items': ['Styles', 'Format', 'Font', 'FontSize']},
+            {'name': 'colors',
+             'items': ['TextColor', 'BGColor']},
+            {'name': 'tools',
+             'items': ['Maximize', 'ShowBlocks']},
+            {'name': 'about',
+             'items': ['About']},
+        ],
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'TextColor', 'BGColor'],
+            ['Format', 'Font', 'FontSize'],
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight'],
+            ['Image', '-', 'Link', 'HorizontalRule', 'Table'],
+            ['Undo', 'Redo'],
+            ['Source', 'Preview'],
+        ],
+        'toolbar': 'Custom',
+        'width': '100%',
+        'tabSpaces': 4,
+        # 'extraPlugins': 'image2',
+        'extraPlugins': ','.join([
+            'image2',
+            'div',
+            'autolink',
+            'autoembed',
+            'embedsemantic',
+            'autogrow',
+            # 'devtools',
+            'widget',
+            'lineutils',
+            'clipboard',
+            'dialog',
+            'dialogui',
+            'elementspath',
+        ]),
+        'enterMode': 3,  # 1: ENTER_P, 2: ENTER_BR, 3: ENTER_DIV
+    },
+}
 
 
 # Auth
