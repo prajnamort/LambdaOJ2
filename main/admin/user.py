@@ -9,7 +9,7 @@ from main.models import User
 class UserAdmin(OrigUserAdmin):
     fieldsets = (
         (None,
-         {'fields': ('username', 'email', 'student_id', 'password')}),
+         {'fields': ('username', 'email', 'mobile', 'student_id', 'password')}),
         (_('Personal info'),
          {'fields': ('first_name', 'last_name')}),
         (_('Permissions'),
@@ -22,11 +22,11 @@ class UserAdmin(OrigUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'student_id', 'password1', 'password2'),
+            'fields': ('username', 'email', 'mobile', 'student_id', 'password1', 'password2'),
         }),
     )
-    list_display = ('id', 'username', 'email', 'student_id', 'is_staff')
+    list_display = ('id', 'username', 'email', 'mobile', 'student_id', 'is_staff')
     list_display_links = ('id', 'username')
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
-    search_fields = ('username', 'email', 'student_id')
+    search_fields = ('username', 'email', 'mobile', 'student_id')
     ordering = ('id',)
