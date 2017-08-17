@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
 
     'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
     'rest_framework_swagger',
     'django_extensions',
     'ckeditor',
@@ -219,6 +221,14 @@ CKEDITOR_CONFIGS = {
 AUTH_USER_MODEL = 'main.User'
 
 
+# Djoser
+
+DJOSER = {
+    'SET_PASSWORD_RETYPE': True,
+    'LOGOUT_ON_PASSWORD_CHANGE': True,
+}
+
+
 # Django Rest Framework
 
 REST_FRAMEWORK = {
@@ -226,6 +236,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
