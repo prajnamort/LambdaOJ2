@@ -1,4 +1,6 @@
-from django.contrib.auth.admin import UserAdmin as OrigUserAdmin
+from django.contrib.auth.admin import (
+    UserAdmin as OrigUserAdmin, PermissionDenied,
+    sensitive_post_parameters_m, unquote,)
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
@@ -35,3 +37,28 @@ class UserAdmin(OrigUserAdmin):
 
     def groups_str(self, obj):
         return ','.join([g.name for g in obj.groups.all()])
+
+    # 禁止普通 staff 修改（包括新增时） is_superuser 状态。
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:  # Superuser
+            return self.readonly_fields
+        return self.readonly_fields + ('is_superuser',)
+
+    # 禁止普通 staff 查看和修改 Superuser 的资料。
+    def has_change_permission(self, request, obj=None):
+        if obj is None:
+            return True
+        elif request.user.is_superuser:  # Superuser
+            return True
+        elif obj.is_superuser:  # obj is Superuser
+            return False
+        else:
+            return True
+
+    # 禁止普通 staff 修改 Superuser 的密码。
+    @sensitive_post_parameters_m
+    def user_change_password(self, request, id, form_url=''):
+        user = self.get_object(request, unquote(id))
+        if not self.has_change_permission(request, user):
+            raise PermissionDenied
+        return super().user_change_password(request, id, form_url)
