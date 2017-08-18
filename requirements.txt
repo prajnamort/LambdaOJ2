@@ -36,6 +36,7 @@ Pygments==2.2.0
 pyparsing==2.2.0
 pytz==2016.10
 requests==2.18.3
+rules==1.2.1
 simplegeneric==0.8.1
 simplejson==3.11.1
 six==1.10.0

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'rest_framework_swagger',
+    'rules.apps.AutodiscoverRulesConfig',
     'django_extensions',
     'ckeditor',
     'ckeditor_uploader',
@@ -220,6 +221,11 @@ CKEDITOR_CONFIGS = {
 
 AUTH_USER_MODEL = 'main.User'
 
+AUTHENTICATION_BACKENDS = [
+    'rules.permissions.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 
 # Djoser
 
@@ -240,7 +246,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        'rest_framework.permissions.AllowAny',
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     ]
 }
 

@@ -25,8 +25,12 @@ class UserAdmin(OrigUserAdmin):
             'fields': ('username', 'email', 'mobile', 'student_id', 'password1', 'password2'),
         }),
     )
-    list_display = ('id', 'username', 'email', 'mobile', 'student_id', 'is_staff')
+    list_display = ('id', 'username', 'email', 'mobile', 'student_id',
+                    'groups_str', 'is_staff', 'is_superuser')
     list_display_links = ('id', 'username')
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
     search_fields = ('username', 'email', 'mobile', 'student_id')
-    ordering = ('id',)
+    ordering = ('-is_superuser', '-is_staff')
+
+    def groups_str(self, obj):
+        return ','.join([g.name for g in obj.groups.all()])
