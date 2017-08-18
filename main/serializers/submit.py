@@ -10,6 +10,7 @@ class SubmitSerializer(serializers.ModelSerializer):
         label='用户',
         default=serializers.CurrentUserDefault(),
         read_only=True,)
+    user_username = serializers.SerializerMethodField()
     problem = serializers.SlugRelatedField(
         label='问题',
         queryset=Problem.objects.all(),
@@ -17,10 +18,14 @@ class SubmitSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Submit
-        fields = ('id', 'user', 'problem', 'language', 'code', 'create_time',)
+        fields = ('id', 'user', 'user_username', 'problem',
+                  'language', 'code', 'create_time',)
         read_only_fields = ('create_time',)
 
     def validate(self, data):
         if not test_rule('can_access_problem', data['user'], data['problem']):
             raise serializers.ValidationError('您没有提交该问题的权限。')
         return data
+
+    def get_user_username(self, submit):
+        return submit.user.username
