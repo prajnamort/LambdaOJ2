@@ -4,24 +4,19 @@ import psycopg2
 from unipath import FSPath as Path
 
 
+PROJECT_ENV = os.environ['PROJECT_ENV']
+assert PROJECT_ENV in ['LOCAL', 'DEV', 'PROD']
+
+
 # The full path to the repository root.
 BASE = Path(__file__).absolute().ancestor(2)
 
-# It's a secret to everybody
-try:
-    with open(BASE.child('conf').child('secrets.json')) as handle:
-        SECRETS = json.load(handle)
-except IOError:
-    SECRETS = {'secret_key': 'xxx'}
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('SECRET_KEY', '')
 
 
-SECRET_KEY = str(SECRETS['secret_key'])
-
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = SECRETS.get('allowed_hosts', ['*'])
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
 
 # Application definition
@@ -84,12 +79,12 @@ WSGI_APPLICATION = 'lambdaoj2.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': SECRETS['pgsql_db_name'],
-        'HOST': SECRETS['pgsql_db_host'],
-        'PORT': SECRETS['pgsql_db_port'],
-        'USER': SECRETS['pgsql_db_user'],
-        'PASSWORD': SECRETS['pgsql_db_password'],
-        'CONN_MAX_AGE': SECRETS['pgsql_db_conn_max_age'],
+        'NAME': os.environ['PGSQL_DB_NAME'],
+        'HOST': os.environ['PGSQL_DB_HOST'],
+        'PORT': int(os.environ['PGSQL_DB_PORT']),
+        'USER': os.environ['PGSQL_DB_USER'],
+        'PASSWORD': os.environ['PGSQL_DB_PASSWORD'],
+        'CONN_MAX_AGE': int(os.environ['PGSQL_DB_CONN_MAX_AGE']),
         'OPTIONS': {
             'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,
         },
@@ -135,14 +130,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = SECRETS['static_root']
+STATIC_ROOT = os.environ['STATIC_ROOT']
 
 
 # Media files
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = SECRETS['media_root']
+MEDIA_ROOT = os.environ['MEDIA_ROOT']
 
 
 # CKEditor
@@ -257,3 +252,15 @@ REST_FRAMEWORK = {
 SWAGGER_SETTINGS = {
     'DOC_EXPANSION': 'list',
 }
+
+
+# ENV specific settings
+
+if PROJECT_ENV == 'LOCAL':
+    DEBUG = True
+
+elif PROJECT_ENV == 'DEV':
+    DEBUG = True
+
+elif PROJECT_ENV == 'PROD':
+    DEBUG = False
