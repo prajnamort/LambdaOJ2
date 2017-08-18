@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from rules import test_rule
 
-from main.models import Submit
+from main.models import Submit, Problem
 
 
 class SubmitSerializer(serializers.ModelSerializer):
@@ -10,6 +10,10 @@ class SubmitSerializer(serializers.ModelSerializer):
         label='用户',
         default=serializers.CurrentUserDefault(),
         read_only=True,)
+    problem = serializers.SlugRelatedField(
+        label='问题',
+        queryset=Problem.objects.all(),
+        slug_field='number',)
 
     class Meta:
         model = Submit

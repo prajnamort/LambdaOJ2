@@ -21,7 +21,7 @@ urlpatterns = [
 
         url(r'^problems/$',
             views.problem.ProblemList.as_view(), name='problem-list'),
-        url(r'^problems/(?P<pk>\d+)/$',
+        url(r'^problems/(?P<number>\d+)/$',
             views.problem.ProblemDetail.as_view(), name='problem-detail'),
         url(r'^submits/$',
             views.submit.SubmitList.as_view(), name='submit-list'),
