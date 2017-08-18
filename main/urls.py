@@ -30,5 +30,7 @@ urlpatterns = [
 
         url(r'^my/info/$',
             views.user.MyInfo.as_view(), name='my-info'),
+        url(r'^my/submits/$',
+            views.user.MySubmitList.as_view(), name='my-submit-list'),
     ])),
 ]

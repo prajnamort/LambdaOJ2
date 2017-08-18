@@ -15,4 +15,5 @@ def api_root(request, format=None):
         ('problems', reverse('problem-list', request=request, format=format)),
         ('submits', reverse('submit-list', request=request, format=format)),
         ('my-info', reverse('my-info', request=request, format=format)),
+        ('my-submit-list', reverse('my-submit-list', request=request, format=format)),
     ]))
