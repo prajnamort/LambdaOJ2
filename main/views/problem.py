@@ -1,5 +1,5 @@
 from rest_framework import generics
-from rest_framework.exceptions import PermissionDenied, NotAuthenticated
+from rest_framework.exceptions import PermissionDenied
 
 from rules import test_rule
 
@@ -23,9 +23,5 @@ class ProblemDetail(generics.RetrieveAPIView):
     serializer_class = ProblemSerializer
 
     def check_object_permissions(self, request, problem):
-        if problem.released:
-            return
-        elif not request.user.is_authenticated():  # 用户未登录
-            raise NotAuthenticated
-        elif not test_rule('can_access_unreleased_problems', request.user):  # 用户无权限
+        if not test_rule('can_access_problem', request.user, problem):
             raise PermissionDenied
