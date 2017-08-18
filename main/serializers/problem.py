@@ -9,6 +9,6 @@ class ProblemSerializer(serializers.ModelSerializer):
         fields = ('number', 'title', 'time_limit', 'memory_limit',
                   'desc', 'input_desc', 'output_desc',
                   'input_sample', 'output_sample', 'hint',
-                  'sample_num', 'deadline', 'released', 'contributor',
+                  'deadline', 'released', 'contributor',
                   'create_time',)
         read_only_fields = ('create_time',)

@@ -1,0 +1,532 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "API docs for LambdaOJ2",
+        "version": "",
+        "description": "An online judge system for Tsinghua EE."
+    },
+    "basePath": "/api",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/auth/login/": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "登陆（获取 Token）",
+                "operationId": "auth_login",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "username",
+                                "password"
+                            ],
+                            "properties": {
+                                "username": {
+                                    "description": "用户名",
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "description": "密码",
+                                    "type": "string",
+                                    "format": "password"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "auth_token"
+                            ],
+                            "properties": {
+                                "auth_token": {
+                                    "description": "Token",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/logout/": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "登出（注销 Token）",
+                "operationId": "auth_logout",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/auth/password/": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "修改密码",
+                "description": "密码修改后，当前登录用户会自动被注销，需要重新登录。",
+                "operationId": "auth_password",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "current_password",
+                                "new_password",
+                                "re_new_password"
+                            ],
+                            "properties": {
+                                "current_password": {
+                                    "description": "当前密码",
+                                    "type": "string",
+                                    "format": "password"
+                                },
+                                "new_password": {
+                                    "description": "新密码",
+                                    "type": "string",
+                                    "format": "password"
+                                },
+                                "re_new_password": {
+                                    "description": "重复新密码",
+                                    "type": "string",
+                                    "format": "password"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/problems/": {
+            "get": {
+                "tags": [
+                    "Problem"
+                ],
+                "summary": "获取所有 Problem",
+                "description": "能获取到的 problems 与当前用户的权限有关。",
+                "operationId": "problem_list",
+                "parameters": [
+                    {
+                        "name": "page_size",
+                        "in": "query",
+                        "description": "每页获取的条目数。默认为 10 。",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数。默认获取第 1 页。",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "properties": {
+                                "count": {
+                                    "type": "integer",
+                                    "description": "所有 Problem 对象的总数"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "description": "下一页的 URL 链接"
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "description": "上一页的 URL 链接"
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Problem"
+                                    },
+                                    "description": ""
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/problems/{number}/": {
+            "get": {
+                "tags": [
+                    "Problem"
+                ],
+                "summary": "获取 Problem",
+                "operationId": "problem_get",
+                "parameters": [
+                    {
+                        "name": "number",
+                        "in": "path",
+                        "description": "",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Problem"
+                        }
+                    },
+                    "403": {
+                        "description": "当前用户无权访问该题目。"
+                    }
+                }
+            }
+        },
+        "/submits/": {
+            "post": {
+                "tags": [
+                    "Submit"
+                ],
+                "summary": "创建 Submit",
+                "operationId": "submit_post",
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Submit (Create)"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Submit (Retrieve)"
+                        }
+                    },
+                    "403": {
+                        "description": "当前用户无权提交该题目。"
+                    }
+                }
+            }
+        },
+        "/submits/{id}/": {
+            "get": {
+                "tags": [
+                    "Submit"
+                ],
+                "summary": "获取 Submit",
+                "operationId": "submit_get",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/Submit (Retrieve)"
+                        }
+                    },
+                    "403": {
+                        "description": "当前用户无权访问该提交。"
+                    }
+                }
+            }
+        },
+        "/my/info/": {
+            "get": {
+                "tags": [
+                    "My"
+                ],
+                "summary": "获取个人信息",
+                "operationId": "my_info_get",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                }
+            }
+        },
+        "/my/submits/": {
+            "get": {
+                "tags": [
+                    "My"
+                ],
+                "summary": "获取自己的所有提交",
+                "operationId": "my_submit_list",
+                "parameters": [
+                    {
+                        "name": "page_size",
+                        "in": "query",
+                        "description": "每页获取的条目数。默认为 10 。",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "页数。默认获取第 1 页。",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "count",
+                                "results"
+                            ],
+                            "properties": {
+                                "count": {
+                                    "type": "integer",
+                                    "description": "所有 Submit 对象的总数"
+                                },
+                                "next": {
+                                    "type": "string",
+                                    "description": "下一页的 URL 链接"
+                                },
+                                "previous": {
+                                    "type": "string",
+                                    "description": "上一页的 URL 链接"
+                                },
+                                "results": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Submit (Retrieve)"
+                                    },
+                                    "description": ""
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Problem": {
+            "type": "object",
+            "required": [
+                "number",
+                "title",
+                "time_limit",
+                "memory_limit",
+                "desc",
+                "deadline",
+                "released",
+                "create_time"
+            ],
+            "properties": {
+                "number": {
+                    "description": "题目编号",
+                    "type": "integer"
+                },
+                "title": {
+                    "description": "标题",
+                    "type": "string"
+                },
+                "time_limit": {
+                    "description": "时间限制",
+                    "type": "integer"
+                },
+                "memory_limit": {
+                    "description": "内存限制",
+                    "type": "integer"
+                },
+                "desc": {
+                    "description": "题目描述",
+                    "type": "string"
+                },
+                "input_desc": {
+                    "description": "输入描述",
+                    "type": "string"
+                },
+                "output_desc": {
+                    "description": "输出描述",
+                    "type": "string"
+                },
+                "input_sample": {
+                    "description": "输入样例",
+                    "type": "string"
+                },
+                "output_sample": {
+                    "description": "输出样例",
+                    "type": "string"
+                },
+                "hint": {
+                    "description": "提示",
+                    "type": "string"
+                },
+                "deadline": {
+                    "description": "截止日期",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "released": {
+                    "description": "是否已发布",
+                    "type": "boolean"
+                },
+                "contributor": {
+                    "description": "题目贡献者",
+                    "type": "string"
+                },
+                "create_time": {
+                    "description": "创建时间",
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        },
+        "Submit (Create)": {
+            "type": "object",
+            "required": [
+                "problem",
+                "language",
+                "code"
+            ],
+            "properties": {
+                "problem": {
+                    "description": "题目编号",
+                    "type": "integer"
+                },
+                "language": {
+                    "description": "语言 (C, CPP)",
+                    "type": "string"
+                },
+                "code": {
+                    "description": "代码",
+                    "type": "string"
+                }
+            }
+        },
+        "Submit (Retrieve)": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Submit (Create)"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "id",
+                        "user",
+                        "user_username",
+                        "create_time"
+                    ],
+                    "properties": {
+                        "id": {
+                            "description": "Submit ID",
+                            "type": "integer"
+                        },
+                        "user": {
+                            "description": "User ID",
+                            "type": "integer"
+                        },
+                        "user_username": {
+                            "description": "用户名",
+                            "type": "string"
+                        },
+                        "create_time": {
+                            "description": "提交时间",
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    }
+                }
+            ]
+        },
+        "User": {
+            "type": "object",
+            "required": [
+                "id",
+                "username",
+                "is_staff",
+                "date_joined"
+            ],
+            "properties": {
+                "id": {
+                    "description": "用户 ID",
+                    "type": "integer"
+                },
+                "username": {
+                    "description": "用户名",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "邮箱",
+                    "type": "string"
+                },
+                "mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "student_id": {
+                    "description": "学号",
+                    "type": "string"
+                },
+                "is_staff": {
+                    "description": "职员状态",
+                    "type": "boolean"
+                },
+                "date_joined": {
+                    "description": "加入时间",
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "token": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

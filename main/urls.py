@@ -8,16 +8,22 @@ from main import views
 urlpatterns = [
     url(r'^$',
         views.index.main_index, name='index'),
+
+    url(r'^swagger/$',
+        views.api_utils.swagger_view, name='swagger'),
+    url(r'^swagger.json$',
+        views.api_utils.swagger_json, name='swagger_json'),
+
     url(r'^api/', include([
         url(r'^$',
-            views.api_utils.api_root),
+            views.api_utils.api_root, name='api_root'),
 
         url(r'^auth/login/$',
-            djoser_views.LoginView.as_view(), name='auth_login'),
+            djoser_views.LoginView.as_view(), name='auth-login'),
         url(r'^auth/logout/$',
-            djoser_views.LogoutView.as_view(), name='auth_logout'),
+            djoser_views.LogoutView.as_view(), name='auth-logout'),
         url(r'^auth/password/$',
-            djoser_views.SetPasswordView.as_view(), name='auth_password'),
+            djoser_views.SetPasswordView.as_view(), name='auth-password'),
 
         url(r'^problems/$',
             views.problem.ProblemList.as_view(), name='problem-list'),
