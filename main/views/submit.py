@@ -5,7 +5,7 @@ from main.models import Submit
 from main.serializers import SubmitSerializer
 
 
-class SubmitList(generics.ListAPIView):
+class SubmitList(generics.CreateAPIView):
     queryset = Submit.objects.all()
     serializer_class = SubmitSerializer
     permission_classes = (IsAuthenticated,)

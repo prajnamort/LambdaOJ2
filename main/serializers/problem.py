@@ -3,7 +3,7 @@ from rest_framework import serializers
 from main.models import Problem
 
 
-class ProblemSerializer(serializers.HyperlinkedModelSerializer):
+class ProblemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Problem
         fields = ('id', 'number', 'title', 'time_limit', 'memory_limit',
