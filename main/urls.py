@@ -27,5 +27,8 @@ urlpatterns = [
             views.submit.SubmitList.as_view(), name='submit-list'),
         url(r'^submits/(?P<pk>\d+)/$',
             views.submit.SubmitDetail.as_view(), name='submit-detail'),
+
+        url(r'^my/info/$',
+            views.user.MyInfo.as_view(), name='my-info'),
     ])),
 ]

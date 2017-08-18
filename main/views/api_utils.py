@@ -14,4 +14,5 @@ def api_root(request, format=None):
         ('auth_password', reverse('auth_password', request=request, format=format)),
         ('problems', reverse('problem-list', request=request, format=format)),
         ('submits', reverse('submit-list', request=request, format=format)),
+        ('my-info', reverse('my-info', request=request, format=format)),
     ]))

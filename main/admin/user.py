@@ -14,7 +14,7 @@ class UserAdmin(OrigUserAdmin):
          {'fields': ('first_name', 'last_name')}),
         (_('Permissions'),
          {'fields': ('is_active', 'is_staff', 'is_superuser',
-                                       'groups', 'user_permissions')}),
+                     'groups', 'user_permissions')}),
         (_('Important dates'),
          {'fields': ('last_login', 'date_joined')}),
     )
@@ -22,7 +22,8 @@ class UserAdmin(OrigUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'email', 'mobile', 'student_id', 'password1', 'password2'),
+            'fields': ('username', 'email', 'mobile', 'student_id',
+                       'password1', 'password2'),
         }),
     )
     list_display = ('id', 'username', 'email', 'mobile', 'student_id',
