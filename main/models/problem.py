@@ -1,6 +1,7 @@
 """
 Models:
     - Problem:  题目。
+    - TestData:  测试数据。
 """
 
 from django.db import models
@@ -46,8 +47,6 @@ class Problem(models.Model):
     hint = RichTextUploadingField(
         verbose_name='提示',
         blank=True,)
-    sample_num = models.PositiveIntegerField(
-        verbose_name='测试数据总数',)
     deadline = models.DateTimeField(
         verbose_name='截止日期',
         help_text='过期的提交，计算成绩时会打折扣。',)
@@ -66,3 +65,37 @@ class Problem(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def testdata_num(self):
+        """测试数据总数"""
+        return self.testdata_set.count()
+
+
+class TestData(models.Model):
+    """测试数据"""
+
+    class Meta:
+        verbose_name = '测试数据'
+        verbose_name_plural = verbose_name
+        ordering = ['order']
+
+    order = models.PositiveIntegerField(
+        verbose_name='顺序',)
+    problem = models.ForeignKey(
+        to='Problem',
+        verbose_name='题目',
+        related_name='testdata_set',)
+    input_file = models.FileField(
+        verbose_name='输入文件',
+        upload_to='uploads/',)
+    output_file = models.FileField(
+        verbose_name='输出文件',
+        upload_to='uploads/',)
+
+    create_time = models.DateTimeField(
+        verbose_name='创建时间',
+        default=timezone.now,)
+
+    def __str__(self):
+        return '%s' % self.order
