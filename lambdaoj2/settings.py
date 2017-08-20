@@ -250,6 +250,11 @@ REST_FRAMEWORK = {
 }
 
 
+# Judge
+
+JUDGE_BASE_DIR = os.environ['JUDGE_BASE_DIR']
+
+
 # Django Rest Swagger
 
 SWAGGER_SETTINGS = {
