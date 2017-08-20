@@ -5,9 +5,11 @@ from main.models import Submit
 
 @admin.register(Submit)
 class SubmitAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'problem', 'language', 'create_time',)
+    list_display = ('id', 'user', 'problem', 'language',
+                    'judge_status', 'score', 'create_time',)
     fields = ('user', 'problem', 'language', 'code',
-              'create_time',)
+              'judge_status', 'compile_status', 'run_results',
+              'error_message', 'score', 'create_time',)
     readonly_fields = ('create_time',)
 
     # 禁止普通 staff 修改任何 Submit 内容（只能查看）。
