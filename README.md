@@ -59,12 +59,10 @@ vagrant up
 ### 编辑 hosts 文件
 
 编辑系统的 hosts 文件 (`/etc/hosts`) ，用于访问虚拟机。
-添加下面这几行：
+添加下面这行：
 
 ```
 192.168.27.10   lambdaoj2
-192.168.27.10   www.lambdaoj2
-192.168.27.10   admin.lambdaoj2
 ```
 
 ## 本地开发流程
@@ -97,6 +95,39 @@ workon LambdaOJ2
 > 这个目录（`/vagrant`）是共享的，内容和外面 Host 系统的 milos 项目目录是保持一致的。
 > 开发时，只需要在外面的 Host 系统中用自己喜欢的编辑器修改项目代码即可。
 > git 也直接在 Host 系统中使用即可。
+
+### 更新环境
+
+代码从线上 master 分支更新后，可能需要进行某些准备工作。
+
+若 pip 依赖包进行过变动：
+
+```bash
+pip install -r requirements.txt
+```
+
+若 migrations 文件有过变动：
+
+```bash
+./manage.py migrate --noinput
+```
+
+### 运行
+
+#### Celery
+
+暂未启用。
+
+#### www 站点
+
+```bash
+./manage.py runserver 0.0.0.0:8000
+```
+
+可访问：
+[http://lambdaoj2:8000/swagger/](http://lambdaoj2:8000/swagger/)
+或
+[http://lambdaoj2:8000/api/](http://lambdaoj2:8000/api/)
 
 
 ### 挂起或关闭虚拟机
