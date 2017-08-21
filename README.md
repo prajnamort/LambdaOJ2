@@ -129,16 +129,19 @@ pip install -r requirements.txt
 * 重启：`celery multi restart lambdaoj2 -A lambdaoj2 -l info --pidfile="/tmp/celery_lambdaoj2.pid" --logfile="/var/log/celery/lambdaoj2.log"`
 * 关闭：`celery multi stop lambdaoj2 -A lambdaoj2 -l info --pidfile="/tmp/celery_lambdaoj2.pid" --logfile="/var/log/celery/lambdaoj2.log"`
 
-#### www 站点
+#### www 与 admin 站点
 
 ```bash
 ./manage.py runserver 0.0.0.0:8000
 ```
 
-可访问：
+www 可访问：
 [http://lambdaoj2:8000/swagger/](http://lambdaoj2:8000/swagger/)
 或
 [http://lambdaoj2:8000/api/](http://lambdaoj2:8000/api/)
+
+admin 可访问：
+[http://lambdaoj2:8000/admin/](http://lambdaoj2:8000/admin/)
 
 
 ### 挂起或关闭虚拟机
