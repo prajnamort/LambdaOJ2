@@ -1,3 +1,4 @@
+from django.db import transaction, OperationalError
 from django.db.models import F
 from django.conf import settings
 from celery import shared_task
@@ -10,7 +11,15 @@ from main.judge import DefaultJudge
 from main.models import Submit
 
 
-@shared_task
+class CheckConditionError(Exception):
+    """自定义错误，用于条件检查错误时。"""
+    pass
+
+
+@shared_task(autoretry_for=(oj.judge.NeedRejudgeError,
+                            OperationalError,
+                            CheckConditionError),
+             retry_kwargs={'countdown': 10, 'max_retries': 5})
 def judge_submit(submit_pk):
     submit = Submit.objects.get(pk=submit_pk)
     problem = submit.problem
@@ -26,8 +35,12 @@ def judge_submit(submit_pk):
         f.write(submit.code)
 
     # 更新状态为判题中
-    submit.judge_status = Submit.JUDGE_JUDGING
-    submit.save()
+    with transaction.atomic():
+        submit.refresh_from_db()
+        if submit.judge_status == Submit.JUDGE_COMPLETED:
+            raise CheckConditionError('Submit is in COMPLETED state.')
+        submit.judge_status = Submit.JUDGE_JUDGING
+        submit.save()
     # 开始判题
     judge = JudgeClass(
         problem_id=str(problem.id),
@@ -38,25 +51,29 @@ def judge_submit(submit_pk):
     # 删除工作目录
     shutil.rmtree(work_dir)
 
-    # 更新 Submit 状态和结果
-    if compile_status == oj.consts.COMPILE_OK:
-        submit.compile_status = Submit.COMPILE_OK
-        submit.run_results = [list(tp) for tp in results]
-        total = len(submit.run_results)
-        accepted = len([status for (status, _, _) in submit.run_results
-                        if status == oj.consts.ACCEPTED])
-        if total == 0:
+    with transaction.atomic():
+        submit.refresh_from_db()
+        if submit.judge_status != Submit.JUDGE_JUDGING:
+            raise CheckConditionError('Submit is not in JUDGING state.')
+        # 更新 Submit 状态和结果
+        if compile_status == oj.consts.COMPILE_OK:
+            submit.compile_status = Submit.COMPILE_OK
+            submit.run_results = [list(tp) for tp in results]
+            total = len(submit.run_results)
+            accepted = len([status for (status, _, _) in submit.run_results
+                            if status == oj.consts.ACCEPTED])
+            if total == 0:
+                submit.score = 0.0
+            else:
+                submit.score = 100.0 * (accepted / total)
+        elif compile_status == oj.consts.COMPILE_ERROR:
+            submit.compile_status = Submit.COMPILE_ERROR
+            submit.error_message = results
             submit.score = 0.0
-        else:
-            submit.score = 100.0 * (accepted / total)
-    elif compile_status == oj.consts.COMPILE_ERROR:
-        submit.compile_status = Submit.COMPILE_ERROR
-        submit.error_message = results
-        submit.score = 0.0
-    submit.judge_status = Submit.JUDGE_COMPLETED
-    submit.save()
-    # 更新 Problem 统计数据
-    problem.submit_cnt = F('submit_cnt') + 1
-    if submit.score == 100.0:
-        problem.accept_cnt = F('accept_cnt') + 1
-    problem.save()
+        submit.judge_status = Submit.JUDGE_COMPLETED
+        submit.save()
+        # 更新 Problem 统计数据
+        problem.submit_cnt = F('submit_cnt') + 1
+        if submit.score == 100.0:
+            problem.accept_cnt = F('accept_cnt') + 1
+        problem.save()
