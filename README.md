@@ -121,6 +121,13 @@ pip install -r requirements.txt
 ./manage.py migrate --noinput
 ```
 
+如需创建站点管理员账号：
+
+```bash
+./manage.py createsuperuser
+```
+
+
 ### 运行
 
 #### Celery
