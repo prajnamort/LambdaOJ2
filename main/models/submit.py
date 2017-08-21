@@ -14,6 +14,7 @@ class Submit(models.Model):
     class Meta:
         verbose_name = '提交'
         verbose_name_plural = verbose_name
+        ordering = ['-id']
 
     C = 'C'
     CPP = 'CPP'

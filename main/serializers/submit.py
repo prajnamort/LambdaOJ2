@@ -18,9 +18,11 @@ class SubmitSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Submit
-        fields = ('id', 'user', 'user_username', 'problem',
-                  'language', 'code', 'create_time',)
-        read_only_fields = ('create_time',)
+        fields = ('id', 'user', 'user_username', 'problem', 'language', 'code',
+                  'judge_status', 'compile_status', 'run_results',
+                  'error_message', 'score', 'create_time',)
+        read_only_fields = ('judge_status', 'compile_status', 'run_results',
+                            'error_message', 'score', 'create_time',)
 
     def validate(self, data):
         if not test_rule('can_access_problem', data['user'], data['problem']):

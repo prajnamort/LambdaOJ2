@@ -363,7 +363,7 @@
                 "released",
                 "create_time",
                 "submit_cnt",
-                "accept_cnt",
+                "accept_cnt"
             ],
             "properties": {
                 "number": {
@@ -467,6 +467,7 @@
                         "id",
                         "user",
                         "user_username",
+                        "judge_status",
                         "create_time"
                     ],
                     "properties": {
@@ -481,6 +482,43 @@
                         "user_username": {
                             "description": "用户名",
                             "type": "string"
+                        },
+                        "judge_status": {
+                            "description": "判题状态 (P 等待中, J 判题中, C 已完成判题)",
+                            "type": "string"
+                        },
+                        "compile_status": {
+                            "description": "编译状态 (O 编译成功, E 编译失败)",
+                            "type": "string"
+                        },
+                        "run_results": {
+                            "description": "运行结果",
+                            "type": "array",
+                            "items": {
+                                "type": "array",
+                                "items": [
+                                    {
+                                        "description": "task_status",
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "description": "time_used",
+                                        "type": "integer"
+                                    },
+                                    {
+                                        "description": "mem_used",
+                                        "type": "integer"
+                                    }
+                                ]
+                            }
+                        },
+                        "error_message": {
+                            "description": "错误消息 (当且仅当编译失败时存在)",
+                            "type": "string"
+                        },
+                        "score": {
+                            "description": "得分 (100 分制)",
+                            "type": "double"
                         },
                         "create_time": {
                             "description": "提交时间",
