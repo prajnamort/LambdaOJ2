@@ -75,3 +75,9 @@ class Submit(models.Model):
 
     def __str__(self):
         return str(self.pk)
+
+    def get_codefile_suffix(self):
+        if self.language == Submit.C:
+            return '.c'
+        elif self.language == Submit.CPP:
+            return '.cpp'
