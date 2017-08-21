@@ -59,6 +59,14 @@ class Problem(models.Model):
         max_length=40,
         blank=True,)
 
+    submit_cnt = models.BigIntegerField(
+        verbose_name='提交次数',
+        help_text='只记录成功完成判题的提交',
+        default=0,)
+    accept_cnt = models.BigIntegerField(
+        verbose_name='通过次数',
+        default=0,)
+
     create_time = models.DateTimeField(
         verbose_name='创建时间',
         default=timezone.now,)
@@ -70,6 +78,13 @@ class Problem(models.Model):
     def testdata_num(self):
         """测试数据总数"""
         return self.testdata_set.count()
+
+    @property
+    def accept_rate(self):
+        if self.submit_cnt == 0:
+            return '%.2f%%' % 0.0
+        else:
+            return '%.2f%%' % (100.0 * (self.accept_cnt / self.submit_cnt))
 
 
 class TestData(models.Model):

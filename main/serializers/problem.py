@@ -10,5 +10,5 @@ class ProblemSerializer(serializers.ModelSerializer):
                   'desc', 'input_desc', 'output_desc',
                   'input_sample', 'output_sample', 'hint',
                   'deadline', 'released', 'contributor',
-                  'create_time',)
-        read_only_fields = ('create_time',)
+                  'create_time', 'submit_cnt', 'accept_cnt',)
+        read_only_fields = ('create_time', 'submit_cnt', 'accept_cnt',)

@@ -1,4 +1,4 @@
-from django.db import transaction
+from django.db.models import F
 from django.conf import settings
 from celery import shared_task
 
@@ -25,35 +25,38 @@ def judge_submit(submit_pk):
     with open(source_code, 'w') as f:
         f.write(submit.code)
 
+    # 更新状态为判题中
+    submit.judge_status = Submit.JUDGE_JUDGING
+    submit.save()
+    # 开始判题
     judge = JudgeClass(
         problem_id=str(problem.id),
         work_dir=work_dir,
         source_code=source_code,)
-
-    # 开始判题
-    with transaction.atomic():
-        submit.judge_status = Submit.JUDGE_JUDGING
-        submit.save()
     (compile_status, results) = judge.run()
 
     # 删除工作目录
     shutil.rmtree(work_dir)
 
-    # 统计结果
-    with transaction.atomic():
-        if compile_status == oj.consts.COMPILE_OK:
-            submit.compile_status = Submit.COMPILE_OK
-            submit.run_results = [list(tp) for tp in results]
-            total = len(submit.run_results)
-            accepted = len([status for (status, _, _) in submit.run_results
-                            if status == oj.consts.ACCEPTED])
-            if total == 0:
-                submit.score = 0.0
-            else:
-                submit.score = 100.0 * (accepted / total)
-        elif compile_status == oj.consts.COMPILE_ERROR:
-            submit.compile_status = Submit.COMPILE_ERROR
-            submit.error_message = results
+    # 更新 Submit 状态和结果
+    if compile_status == oj.consts.COMPILE_OK:
+        submit.compile_status = Submit.COMPILE_OK
+        submit.run_results = [list(tp) for tp in results]
+        total = len(submit.run_results)
+        accepted = len([status for (status, _, _) in submit.run_results
+                        if status == oj.consts.ACCEPTED])
+        if total == 0:
             submit.score = 0.0
-        submit.judge_status = Submit.JUDGE_COMPLETED
-        submit.save()
+        else:
+            submit.score = 100.0 * (accepted / total)
+    elif compile_status == oj.consts.COMPILE_ERROR:
+        submit.compile_status = Submit.COMPILE_ERROR
+        submit.error_message = results
+        submit.score = 0.0
+    submit.judge_status = Submit.JUDGE_COMPLETED
+    submit.save()
+    # 更新 Problem 统计数据
+    problem.submit_cnt = F('submit_cnt') + 1
+    if submit.score == 100.0:
+        problem.accept_cnt = F('accept_cnt') + 1
+    problem.save()

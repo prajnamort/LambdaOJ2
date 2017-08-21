@@ -361,7 +361,9 @@
                 "desc",
                 "deadline",
                 "released",
-                "create_time"
+                "create_time",
+                "submit_cnt",
+                "accept_cnt",
             ],
             "properties": {
                 "number": {
@@ -421,6 +423,14 @@
                     "description": "创建时间",
                     "type": "string",
                     "format": "date-time"
+                },
+                "submit_cnt": {
+                    "description": "提交次数",
+                    "type": "integer"
+                },
+                "accept_cnt": {
+                    "description": "通过次数",
+                    "type": "integer"
                 }
             }
         },
