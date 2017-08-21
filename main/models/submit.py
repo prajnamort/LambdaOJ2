@@ -88,7 +88,7 @@ class Submit(models.Model):
     def get_codefile_suffix(self):
         if self.language in [Submit.C89, Submit.C99, Submit.C11]:
             return '.c'
-        elif self.language == [Submit.CPP03, Submit.CPP11]:
+        elif self.language in [Submit.CPP03, Submit.CPP11]:
             return '.cpp'
 
     def get_compiler_name(self):
