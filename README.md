@@ -65,6 +65,15 @@ vagrant up
 192.168.27.10   lambdaoj2
 ```
 
+### 安装 libLambdaOJ2
+
+此外，判题需要使用 libLambdaOJ2 库，请参照：
+[https://github.com/kainwen/liblambdaOJ2](https://github.com/kainwen/liblambdaOJ2)
+进行安装。
+（仅需安装库本身，不要安装 Python3 API。）
+（cmake 路径前缀默认使用 `/usr/local` ）
+
+
 ## 本地开发流程
 
 ### 登陆虚拟机
