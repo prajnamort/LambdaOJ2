@@ -16,10 +16,16 @@ class Submit(models.Model):
         verbose_name_plural = verbose_name
         ordering = ['-id']
 
-    C = 'C'
-    CPP = 'CPP'
-    LANGUAGE_CHOICES = ((C, 'C'),
-                        (CPP, 'C++'),)
+    C89 = 'C89'
+    C99 = 'C99'
+    C11 = 'C11'
+    CPP03 = 'C++03'
+    CPP11 = 'C++11'
+    LANGUAGE_CHOICES = ((C89, 'C89'),
+                        (C99, 'C99'),
+                        (C11, 'C11'),
+                        (CPP03, 'C++03'),
+                        (CPP11, 'C++11'),)
 
     JUDGE_PENDING = 'P'
     JUDGE_JUDGING = 'J'
@@ -80,7 +86,10 @@ class Submit(models.Model):
         return str(self.pk)
 
     def get_codefile_suffix(self):
-        if self.language == Submit.C:
+        if self.language in [Submit.C89, Submit.C99, Submit.C11]:
             return '.c'
-        elif self.language == Submit.CPP:
+        elif self.language == [Submit.CPP03, Submit.CPP11]:
             return '.cpp'
+
+    def get_compiler_name(self):
+        return self.language.lower()

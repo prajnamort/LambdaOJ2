@@ -45,7 +45,8 @@ def judge_submit(submit_pk):
     judge = JudgeClass(
         problem_id=str(problem.id),
         work_dir=work_dir,
-        source_code=source_code,)
+        source_code=source_code,
+        compiler_name=submit.get_compiler_name(),)
     (compile_status, results) = judge.run()
 
     # 删除工作目录

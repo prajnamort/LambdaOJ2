@@ -447,7 +447,7 @@
                     "type": "integer"
                 },
                 "language": {
-                    "description": "语言 (C, CPP)",
+                    "description": "语言 (C89, C99, C11, C++03, C++11)",
                     "type": "string"
                 },
                 "code": {

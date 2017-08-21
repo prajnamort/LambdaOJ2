@@ -12,7 +12,6 @@ class DefaultJudge(Judge):
         kwargs['sample_num'] = len(self.testdatas)
         kwargs['time_limit'] = problem.time_limit
         kwargs['mem_limit'] = problem.memory_limit
-        kwargs['compiler_name'] = 'c89'
         kwargs['judge_exe']=settings.JUDGE_BIN
         kwargs['compile_code_exe']=settings.COMPILE_CODE_BIN
         super().__init__(**kwargs)
