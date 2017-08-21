@@ -53,7 +53,8 @@ class Problem(models.Model):
     released = models.BooleanField(
         verbose_name='是否已发布',
         default=False,
-        help_text='普通学生账号只能看到已发布的题目。',)
+        help_text='普通学生账号只能看到已发布的题目。',
+        db_index=True,)
     contributor = models.CharField(
         verbose_name='题目贡献者',
         max_length=40,
@@ -96,7 +97,8 @@ class TestData(models.Model):
         ordering = ['order']
 
     order = models.PositiveIntegerField(
-        verbose_name='顺序',)
+        verbose_name='顺序',
+        db_index=True,)
     problem = models.ForeignKey(
         to='Problem',
         verbose_name='题目',

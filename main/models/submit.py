@@ -52,7 +52,8 @@ class Submit(models.Model):
         verbose_name='判题状态',
         max_length=1,
         choices=JUDGE_STATUS_CHOICES,
-        default=JUDGE_PENDING,)
+        default=JUDGE_PENDING,
+        db_index=True,)
     compile_status = models.CharField(
         verbose_name='编译状态',
         max_length=1,
@@ -68,7 +69,8 @@ class Submit(models.Model):
     score = models.FloatField(
         verbose_name='得分',
         help_text='得分使用 100 分制',
-        blank=True, null=True,)
+        blank=True, null=True,
+        db_index=True,)
 
     create_time = models.DateTimeField(
         verbose_name='提交时间',
