@@ -16,6 +16,7 @@ class MyInfo(generics.RetrieveAPIView):
 class MySubmitList(generics.ListAPIView):
     serializer_class = SubmitSerializer
     permission_classes = (IsAuthenticated,)
+    throttle_scope = 'my-submit-list'
 
     def get_queryset(self):
         return Submit.objects.filter(user=self.request.user)

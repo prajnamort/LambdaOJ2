@@ -1,7 +1,5 @@
 from django.conf.urls import url, include
 
-from djoser import views as djoser_views
-
 from main import views
 
 
@@ -19,11 +17,11 @@ urlpatterns = [
             views.api_utils.api_root, name='api_root'),
 
         url(r'^auth/login/$',
-            djoser_views.LoginView.as_view(), name='auth-login'),
+            views.auth.LoginView.as_view(), name='auth-login'),
         url(r'^auth/logout/$',
-            djoser_views.LogoutView.as_view(), name='auth-logout'),
+            views.auth.LogoutView.as_view(), name='auth-logout'),
         url(r'^auth/password/$',
-            djoser_views.SetPasswordView.as_view(), name='auth-password'),
+            views.auth.SetPasswordView.as_view(), name='auth-password'),
 
         url(r'^problems/$',
             views.problem.ProblemList.as_view(), name='problem-list'),

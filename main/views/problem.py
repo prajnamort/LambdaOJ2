@@ -9,6 +9,7 @@ from main.serializers import ProblemSerializer
 
 class ProblemList(generics.ListAPIView):
     serializer_class = ProblemSerializer
+    throttle_scope = 'problem'
 
     def get_queryset(self):
         user = self.request.user
@@ -22,6 +23,7 @@ class ProblemDetail(generics.RetrieveAPIView):
     queryset = Problem.objects.all()
     serializer_class = ProblemSerializer
     lookup_field = 'number'
+    throttle_scope = 'problem'
 
     def check_object_permissions(self, request, problem):
         if not test_rule('can_access_problem', request.user, problem):

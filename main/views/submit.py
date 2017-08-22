@@ -13,6 +13,7 @@ class SubmitList(generics.CreateAPIView):
     queryset = Submit.objects.all()
     serializer_class = SubmitSerializer
     permission_classes = (IsAuthenticated,)
+    throttle_scope = 'submit-create'
 
     def perform_create(self, serializer):
         submit = serializer.save()
@@ -23,6 +24,7 @@ class SubmitDetail(generics.RetrieveAPIView):
     queryset = Submit.objects.all()
     serializer_class = SubmitSerializer
     permission_classes = (IsAuthenticated,)
+    throttle_scope = 'submit-get'
 
     def check_object_permissions(self, request, submit):
         if not test_rule('can_view_submit', request.user, submit):

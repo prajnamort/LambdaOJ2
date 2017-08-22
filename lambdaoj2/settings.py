@@ -254,8 +254,22 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
-        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-    ]
+    ],
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.ScopedRateThrottle',
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'auth-login': '3/minute',
+        'auth-password': '3/minute',
+        'problem': '100/hour',
+        'submit-create': '10/minute',
+        'submit-get': '1000/hour',
+        'my-submit-list': '1000/hour',
+        'anon': '1000/day',
+        'user': '10000/day',
+    },
 }
 
 
