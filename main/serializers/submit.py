@@ -15,11 +15,12 @@ class SubmitSerializer(serializers.ModelSerializer):
         label='问题',
         queryset=Problem.objects.all(),
         slug_field='number',)
+    problem_title = serializers.SerializerMethodField()
 
     class Meta:
         model = Submit
-        fields = ('id', 'user', 'user_username', 'problem', 'language', 'code',
-                  'judge_status', 'compile_status', 'run_results',
+        fields = ('id', 'user', 'user_username', 'problem', 'problem_title',
+                  'language', 'code', 'judge_status', 'compile_status', 'run_results',
                   'error_message', 'score', 'create_time',)
         read_only_fields = ('judge_status', 'compile_status', 'run_results',
                             'error_message', 'score', 'create_time',)
@@ -31,3 +32,6 @@ class SubmitSerializer(serializers.ModelSerializer):
 
     def get_user_username(self, submit):
         return submit.user.username
+
+    def get_problem_title(self, submit):
+        return submit.problem.title
