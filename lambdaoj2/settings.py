@@ -8,8 +8,8 @@ PROJECT_ENV = os.environ['PROJECT_ENV']
 assert PROJECT_ENV in ['LOCAL', 'DEV', 'PROD']
 
 
-# The full path to the repository root.
-BASE = Path(__file__).absolute().ancestor(2)
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'ckeditor',
     'ckeditor_uploader',
+    'corsheaders',
 
     'main',
 ]
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -57,7 +59,7 @@ ROOT_URLCONF = 'lambdaoj2.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['fe/dist'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -140,6 +142,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.environ['STATIC_ROOT']
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "fe/dist/static"),
+]
 
 
 # Media files
@@ -250,7 +256,7 @@ REST_FRAMEWORK = {
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
@@ -263,12 +269,12 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'auth-login': '3/minute',
         'auth-password': '3/minute',
-        'problem': '100/hour',
-        'submit-create': '10/minute',
+        'problem': '10000/hour', # supposed to be 100/hour
+        'submit-create': '1000/minute', # 10/minute
         'submit-get': '1000/hour',
         'my-submit-list': '1000/hour',
         'anon': '1000/day',
-        'user': '10000/day',
+        'user': '1000000/day', # 10000/day
     },
 }
 
@@ -287,6 +293,11 @@ JUDGE_BASE_DIR = os.environ['JUDGE_BASE_DIR']
 SWAGGER_SETTINGS = {
     'DOC_EXPANSION': 'list',
 }
+
+
+# CORS
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 # ENV specific settings

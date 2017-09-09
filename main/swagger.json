@@ -465,6 +465,7 @@
                     "type": "object",
                     "required": [
                         "id",
+                        "problem_title",
                         "user",
                         "user_username",
                         "judge_status",
@@ -474,6 +475,10 @@
                         "id": {
                             "description": "Submit ID",
                             "type": "integer"
+                        },
+                        "problem_title": {
+                            "description": "题目标题",
+                            "type": "string"
                         },
                         "user": {
                             "description": "User ID",
