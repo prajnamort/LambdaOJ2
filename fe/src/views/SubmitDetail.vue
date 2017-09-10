@@ -15,22 +15,60 @@
         <span class="text">{{ detail.create_time | localtime }}</span>
       </div>
     </div>
-    <template v-if="loading">
-      <div class="judge-status">
-        <div class="title bold">Judge Status</div>
-        <div class="text">{{ detail.judge_status }}</div>
+    <template v-if="judging">
+      <div class="loading-wrapper clearfix">
+        <div class="miku-wrapper">
+          <img class="miku" src="../../static/miku.gif">
+        </div>
+        <div class="judge-text">
+          Miku 正在判题中...
+        </div>
+      </div>
+      <div class="states">
+      </div>
+    </template>
+    <template v-else-if="pending">
+      <div class="loading-wrapper clearfix">
+        <div class="miku-wrapper">
+          <img class="miku" src="../../static/miku2.gif">
+        </div>
+        <div class="judge-text">
+          Miku 正在赶来帮你判题...
+        </div>
+      </div>
+      <div class="states">
+      </div>
+    </template>
+    <template v-else-if="failed">
+      <div class="loading-wrapper clearfix">
+        <div class="miku-wrapper">
+          <img class="miku" src="../../static/miku3.jpg">
+        </div>
+        <div class="judge-text">
+          判题失败了...
+        </div>
       </div>
       <div class="states">
       </div>
     </template>
     <template v-else>
       <template v-if="compileSuccess">
-      <div class="result-wrapper">
+      <div class="empty-result-wrapper" v-if="isEmptyResults(detail.run_results)">
+        <div class="loading-wrapper clearfix">
+          <div class="miku-wrapper">
+            <img class="miku" src="../../static/miku3.jpg">
+          </div>
+          <div class="judge-text">
+            没有测试样例, 无法判题...
+          </div>
+        </div>
+      </div>
+      <div class="result-wrapper" v-else>
         <div class="result-title-wrapper clearfix">
           <div class="left-title bold">运行结果</div>
           <div class="score clearfix">
             <div class="right-title bold">分数</div>
-            <div class="text">{{ detail.score | toFixedTwo }}</div>
+            <div class="text">{{ detail.score | scoreDisplay }}</div>
           </div>
         </div>        
         <div class="run-results">
@@ -48,7 +86,6 @@
                 <td>{{ index + 1 }}</td>
                 <td>
                   <span class="bold" :class="getColorType(item[0])">{{ item[0] | sampleStatus }}</span>
-                  <!-- <span class="bold" :class="getColorRandom()">{{ item[0] | sampleStatus }}</span> -->
                 </td>
                 <td>{{ item[1] | milliseconds }}</td>
                 <td>{{ item[2] }} KB</td>
@@ -89,13 +126,21 @@ export default {
       detail: {},
       problemDetail: {},
       poll: null,
-      id: 0,
-      test: false
+      id: 0
     }
   },
   computed: {
+    judging() {
+      return (this.detail.judge_status === 'J')
+    },
+    pending() {
+      return (this.detail.judge_status === 'P')
+    },
+    failed() {
+      return (this.detail.judge_status === 'F')
+    },
     loading() {
-      return (this.detail.judge_status !== 'C')
+      return (this.judging || this.pending)
     },
     compileSuccess() {
       return (this.detail.compile_status === 'O')
@@ -108,12 +153,12 @@ export default {
           const data = response.data
           this.detail = data
           console.log(this.detail)
-          // this.getProblemTitle(this.detail.problem)
+          if(this.detail.judge_status !== 'C' && 
+             this.detail.judge_status !== 'F') {
+            this.pollDetail(id)
+          }
           resolve()
         }).then(() => {
-          // if(this.loading) {
-          //   pollDetail(id)
-          // }
         }).catch(error => {
           reject(error)
         })
@@ -130,13 +175,6 @@ export default {
           reject(error)
         })
       })
-    },
-    checkTest() {
-      setTimeout(this.showTest, 2000)
-    },
-    showTest() {
-      console.log(this.test)
-      this.test = true
     },
     getColorType(val) {
       let color = ""
@@ -178,40 +216,27 @@ export default {
       }
       return color
     },
-    // waitForJudge(id, resolve, reject) {
-    //   // const endTime = Number(new Date()) + 50000
-    //   getSubmitDetail(id).then(response => {
-    //     const data = response.data
-    //     this.detail = data
-    //     console.log(this.detail)
-    //     if(this.detail.judge_status === 'C') {
-    //       // this.test = true
-    //       return resolve();
-    //     }
-    //     // console.log(Number(new Date()) < endTime)
-    //     // setTimeout(this.waitForJudge(id, resolve, reject), 1000)
-    //     // else if(Number(new Date()) < endTime) {
-    //     //   setTimeout(this.waitForJudge(id, resolve, reject), 1000)
-    //     // } else {
-    //     //   return reject(new Error('timed out'))
-    //     // }
-    //   })
-    // },
+    isEmptyResults(results) {
+      return !Boolean(results.length)
+    },
     pollDetail(id) {
-      const endTime = Number(new Date()) + 50000
+      const duration = 3600 * 1000
+      const endTime = Number(new Date()) + duration
 
       this.poll = setInterval(() => {
         getSubmitDetail(id).then(response => {
           const data = response.data
           this.detail = data
-          console.log(this.detail)
-          if(this.detail.judge_status === 'C') {
+          if(this.detail.judge_status === 'C' || 
+             this.detail.judge_status === 'F') {
             clearInterval(this.poll)
           }
           else if (Number(new Date()) > endTime) {
             clearInterval(this.poll)
             console.log('time out')
           }
+        }).catch(error => {
+          clearInterval(this.poll)
         })
       }, 1000)
     }
@@ -219,7 +244,6 @@ export default {
   created() {
     this.id = this.$route.params.id
     this.getDetail(this.id)
-    this.pollDetail(this.id)
   }
 }
 </script>
@@ -263,17 +287,35 @@ export default {
       }
     }
   }
+  .loading-wrapper {
+    margin: 60px 0 30px;
+    .miku-wrapper {
+      float: left;
+      height: 350px;
+    }
+    .judge-text {
+      width: 484px;
+      float: left;
+      height: 350px;
+      line-height: 350px;
+      font-size: 38px;
+      padding-left: 30px;
+      color: #35767A;
+      overflow: hidden;
+    }
+  }
   .title {
     margin-top: 20px;
     margin-bottom: 10px;
   }
   .result-wrapper {
     width: 790px;
-    margin: 30px auto 40px;
+    margin: 40px auto 30px;
     padding: 20px 0 50px;
     // border: 1px solid #aaa;
     background: rgba(162, 226, 214, 0.08);
     border-radius: 10px;
+    border: 2px solid #BAE8BA;
     .result-title-wrapper {
       height: 52px;
       line-height: 52px;

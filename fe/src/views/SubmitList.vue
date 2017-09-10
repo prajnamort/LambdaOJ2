@@ -17,7 +17,10 @@
             <td>
               <router-link :to="'/submit/' + item.id">{{ item.id }}</router-link >
             </td>
-            <td>{{ item.score | scoreRange }}</td>
+            <td>
+              <!-- <span :class="getClassType(item.score)">{{ item.score | scoreRange }}</span> -->
+              {{ item.score | scoreDisplay(item.judge_status) }}
+            </td>
             <td>{{ item.problem_title }}</td>
             <td>{{ item.language }}</td>
             <td>{{ item.create_time | localtime }}</td>
@@ -61,6 +64,23 @@ export default {
         })
       })
     },
+    getClassType(score) {
+      let className = ''
+      if(score === 100) {
+        className = 'cool'
+      } else if(score >= 80) {
+        className = 'fine'
+      } else if(score >=50) {
+        className = 'safe'
+      } else if(score > 0) {
+        className = 'sad'
+      } else if(score === 0) {
+        className = 'worst'
+      } else {
+        className = 'none'
+      }
+      return className
+    },
     goTo(val) {
       this.$router.push({path: '/submit/'+ val.toString()})
     }
@@ -83,19 +103,19 @@ export default {
         padding: 8px;
         th {
           &:first-child {
-            width: 10%;
+            width: 12%;
           }
           &:nth-child(2) {
-            width: 10%;
+            width: 12%;
           }
           &:nth-child(3) {
-            width: 40%;
+            width: 35%;
           }
           &:nth-child(4) {
-            width: 10%;
+            width: 15%;
           }
           &:last-child {
-            width: 20%;
+            width: 26%;
           }
         }
       }
@@ -107,19 +127,32 @@ export default {
           padding: 8px;
           text-align: center;
           &:first-child {
-            width: 10%;
+            width: 12%;
           }
           &:nth-child(2) {
-            width: 10%;
+            width: 12%;
+            .cool {
+              // color: white;
+              font-weight: 700;
+              // color: #fff72d;
+              // background-color: rgba(122, 35, 0, 0.8);
+              color: rgba(122, 35, 0, 0.8);
+              background-color: rgba(250, 245, 50, 0.8);
+              padding: 0 10px;
+              border-radius: 10px;
+            }
+            .worst {
+
+            }
           }
           &:nth-child(3) {
-            width: 40%;
+            width: 35%;
           }
           &:nth-child(4) {
-            width: 10%;
+            width: 15%;
           }
           &:last-child {
-            width: 20%;
+            width: 26%;
           }
           a {
             color: #5cb85c;

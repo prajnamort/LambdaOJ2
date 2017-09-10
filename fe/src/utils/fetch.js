@@ -20,4 +20,16 @@ service.interceptors.request.use(config => {
   Promise.reject(error)
 })
 
+// respone拦截器
+service.interceptors.response.use(
+  response => response,
+  error => {
+    console.log(error.response)// for debug
+    if (error.response.status === 429 || error.response.status >= 500) {
+    	alert(error.response.data.detail)
+    }
+    return Promise.reject(error)
+  }
+)
+
 export default service

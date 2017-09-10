@@ -72,9 +72,16 @@ export function milliseconds(seconds) {
   return (seconds * 1000).toString() + ' ms'
 }
 
-export function toFixedTwo(val) {
+export function scoreDisplay(val, status='C') {
   if (arguments.length === 0) {
     return null
+  }
+  if(typeof val === "object") {
+    if (status === 'J' || status === 'P') { 
+      return '判题未完成'
+    } else {
+      return '判题失败'
+    }
   }
   return Number(val).toFixed(2)
 }
