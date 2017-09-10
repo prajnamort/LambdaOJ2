@@ -43,7 +43,6 @@
                 <th>内存</th>
               </tr>
             </thead>
-            <template v-for="n in 5">
             <tbody>
               <tr v-for="(item, index) in detail.run_results">
                 <td>{{ index + 1 }}</td>
@@ -55,7 +54,6 @@
                 <td>{{ item[2] }} KB</td>
               </tr>
             </tbody>
-            </template>
           </table>
         </div>
       </div>
