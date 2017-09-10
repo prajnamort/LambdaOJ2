@@ -163,7 +163,6 @@ a {
     margin: 0 auto 50px;
     padding: 20px;
     font-family: '微软雅黑', 'Microsoft Yahei', 'Avenir', Helvetica, Arial, sans-serif;
-    // background-color: @bodyBgColor;
   }
 }
 </style>
