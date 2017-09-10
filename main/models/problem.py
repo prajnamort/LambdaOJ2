@@ -82,6 +82,12 @@ class Problem(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        self.contributor = self.contributor.strip()
+        if self.contributor == '':
+            self.contributor = 'Miku Chan'
+        super().save(*args, **kwargs)
+
     @property
     def compare_func(self):
         if self.compare_file:
