@@ -4,7 +4,7 @@ import { getToken } from '@/utils/auth'
 
 // 创建axios实例
 const service = axios.create({
-  baseURL: 'http://lambdaoj2:8000/api/', // api的base_url
+  baseURL: __API__, // api的base_url
   timeout: 5000                  // 请求超时时间
 })
 
