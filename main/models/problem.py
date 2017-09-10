@@ -65,6 +65,7 @@ class Problem(models.Model):
         verbose_name='Compare 函数文件',
         upload_to='uploads/judge/',
         validators=[validate_compare_file],
+        help_text='请实现 compare_func 以自定义比较函数，例：def compare_func(answer, output): return True',
         blank=True,)
 
     submit_cnt = models.BigIntegerField(
