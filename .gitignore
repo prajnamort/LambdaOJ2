@@ -4,6 +4,7 @@
 *.bak
 .vagrant/
 /Vagrantfile
+lambdaoj.ini
 
 ###Emacs###
 *~
