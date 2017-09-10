@@ -270,11 +270,11 @@ REST_FRAMEWORK = {
         'auth-login': '3/minute',
         'auth-password': '3/minute',
         'problem': '10000/hour', # supposed to be 100/hour
-        'submit-create': '1000/minute', # 10/minute
-        'submit-get': '1000/hour',
+        'submit-create': '10/minute', # 10/minute
+        'submit-get': '100000/hour', # 1000/hour
         'my-submit-list': '1000/hour',
         'anon': '1000/day',
-        'user': '1000000/day', # 10000/day
+        'user': '10000/day', # 10000/day
     },
 }
 

@@ -27,3 +27,54 @@ export function localtime(time, cFormat) {
   })
   return time_str
 }
+
+export function sampleStatus(val) {
+  if (arguments.length === 0) {
+    return null
+  }
+  let info = ""
+  switch(val) {
+    case 0:
+      info = "Accepted"
+      break
+    case 1:
+      info = "Wrong Answer"
+      break
+    case 2:
+      info = "Time Limit Exceeded"
+      break
+    case 3:
+      info = "Memory Limit Exceeded"
+      break
+    case 4:
+      info = "Output Limit Exceeded"
+      break
+    case 5:
+      info = "Bad Syscall"
+      break
+    case 6:
+      info = "Run Time Error"
+      break
+    case 7:
+      info = "Unknown Result"
+      break
+    default:
+      break
+  }
+  return info
+}
+
+export function milliseconds(seconds) {
+  if (arguments.length === 0) {
+    return null
+  }
+
+  return (seconds * 1000).toString() + ' ms'
+}
+
+export function toFixedTwo(val) {
+  if (arguments.length === 0) {
+    return null
+  }
+  return Number(val).toFixed(2)
+}

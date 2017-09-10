@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import VeeValidate from 'vee-validate'
 import VueHighlightJS from 'vue-highlightjs'
+import Icon from 'vue-svg-icon/Icon.vue';
 import App from './App'
 import router from './router'
 import store from './store'
@@ -16,6 +17,7 @@ Object.keys(filters).forEach(key => {
 
 Vue.use(VeeValidate)
 Vue.use(VueHighlightJS,['cpp'])
+Vue.component('icon', Icon);
 
 Vue.config.productionTip = false
 
