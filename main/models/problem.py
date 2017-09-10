@@ -9,6 +9,8 @@ from django.utils import timezone
 
 from ckeditor_uploader.fields import RichTextUploadingField
 
+from main.utils.compare_utils import validate_compare_file, get_compare_func
+
 
 class Problem(models.Model):
     """题目"""
@@ -59,6 +61,11 @@ class Problem(models.Model):
         verbose_name='题目贡献者',
         max_length=40,
         blank=True,)
+    compare_file = models.FileField(
+        verbose_name='Compare 函数文件',
+        upload_to='uploads/judge/',
+        validators=[validate_compare_file],
+        blank=True,)
 
     submit_cnt = models.BigIntegerField(
         verbose_name='提交次数',
@@ -74,6 +81,17 @@ class Problem(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def compare_func(self):
+        if self.compare_file:
+            compare_func = get_compare_func(self.compare_file.path)
+        else:
+            def compare_func(answer, output):
+                with open(answer, 'r') as f1, open(output, 'r') as f2:
+                    result = (f1.read() == f2.read())
+                return result
+        return compare_func
 
     @property
     def testdata_num(self):

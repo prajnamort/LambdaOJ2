@@ -20,6 +20,6 @@ class ProblemAdmin(admin.ModelAdmin):
               'desc', 'input_desc', 'output_desc',
               'input_sample', 'output_sample', 'hint',
               'deadline', 'released', 'contributor',
-              'create_time', 'submit_cnt', 'accept_cnt',)
+              'create_time', 'submit_cnt', 'accept_cnt', 'compare_file',)
     readonly_fields = ('create_time', 'submit_cnt', 'accept_cnt',)
     inlines = [TestDataInline,]
