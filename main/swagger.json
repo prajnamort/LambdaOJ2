@@ -489,7 +489,7 @@
                             "type": "string"
                         },
                         "judge_status": {
-                            "description": "判题状态 (P 等待中, J 判题中, C 已完成判题)",
+                            "description": "判题状态 (P 等待中, J 判题中, C 已完成判题, F 判题失败)",
                             "type": "string"
                         },
                         "compile_status": {

@@ -37,8 +37,8 @@ def judge_submit(submit_pk):
     # 更新状态为判题中
     with transaction.atomic():
         submit.refresh_from_db()
-        if submit.judge_status == Submit.JUDGE_COMPLETED:
-            raise CheckConditionError('Submit is in COMPLETED state.')
+        if submit.judge_status in [Submit.JUDGE_COMPLETED, Submit.JUDGE_FAILED]:
+            raise CheckConditionError('Submit has already been judged.')
         submit.judge_status = Submit.JUDGE_JUDGING
         submit.save()
     # 开始判题
@@ -47,10 +47,14 @@ def judge_submit(submit_pk):
         work_dir=work_dir,
         source_code=source_code,
         compiler_name=submit.get_compiler_name(),)
-    (compile_status, results) = judge.run()
-
-    # 删除工作目录
-    shutil.rmtree(work_dir)
+    try:
+        (compile_status, results) = judge.run()
+    except Exception:
+        shutil.rmtree(work_dir)  # 删除工作目录
+        submit.judge_status = Submit.JUDGE_FAILED
+        submit.save()
+    else:
+        shutil.rmtree(work_dir)  # 删除工作目录
 
     with transaction.atomic():
         submit.refresh_from_db()
