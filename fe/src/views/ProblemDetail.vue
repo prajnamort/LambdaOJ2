@@ -4,12 +4,16 @@
       <h1 class="title bold">{{ detail.title }}</h1>
       <div class="info-wrapper clearfix">
         <div class="contributor clearfix">
-          <img class="avatar" src="../../static/BLUE.png">
+          <!-- <img class="avatar" src="../../static/BLUE.png"> -->
           <template v-if="detail.contributor">
-            <span class="text small bold">by {{ detail.contributor }}</span>  
+            <span class="text small bold">by&nbsp;
+              <span class="author">{{ detail.contributor }}</span>
+            </span>  
           </template>
           <template v-else>
-            <span class="text small bold">by 一位不愿意透露姓名的老师</span>  
+            <span class="text small bold">by&nbsp;
+              <span class="author">Miku Chan</span>
+            </span>  
           </template>
         </div>
         <div class="limit-wrapper small">
@@ -24,27 +28,27 @@
         </div>
       </div>
     </div>
-    <div class="desc">
+    <div class="desc desc-item">
       <div class="title bold">问题描述</div>
       <div class="text" v-html="detail.desc"></div>
     </div>
-    <div v-if="detail.input_desc" class="input_desc">
+    <div v-if="detail.input_desc" class="input-desc desc-item">
       <div class="title bold">输入格式</div>
       <div class="text" v-html="detail.input_desc"></div>
     </div>
-    <div v-if="detail.output_desc" class="output_desc">
+    <div v-if="detail.output_desc" class="output-desc desc-item">
       <div class="title bold">输出格式</div>
       <div class="text" v-html="detail.output_desc"></div>
     </div>
-    <div v-if="detail.input_sample" class="input_sample">
+    <div v-if="detail.input_sample" class="input-sample desc-item">
       <div class="title bold">输入样例</div>
       <pre class="text" v-html="detail.input_sample"></pre>
     </div>
-    <div v-if="detail.output_sample" class="output_sample">
+    <div v-if="detail.output_sample" class="output-sample desc-item">
       <div class="title bold">输出样例</div>
       <pre class="text" v-html="detail.output_sample"></pre>
     </div>
-    <div v-if="detail.hint" class="hint">
+    <div v-if="detail.hint" class="hint desc-item">
       <div class="title bold">提示</div>
       <div class="text" v-html="detail.hint"></div>
     </div>
@@ -63,8 +67,11 @@
           </template>
         </div>
       </div>
-      <textarea placeholder="Please paste your code here..." v-model="code"></textarea>
-      <span class="submitButton" @click="submitCode">提交代码</span>
+      <textarea v-validate="'required'" placeholder="Please paste your code here..." name="code" v-model="code"></textarea>
+      <div class="bottom-wrapper clearfix">
+        <div class="warning small"  v-if="errors.has('code')">{{ errors.first('code') }}</div>
+        <span class="submitButton" @click="submitCode">提交代码</span>
+      </div>
     </div>
   </div>
 </template>
@@ -72,6 +79,18 @@
 <script>
 import { getProblemDetail } from '@/api/problem'
 import { submitProblem } from '@/api/submit'
+import { Validator } from 'vee-validate'
+
+const dict = {
+  en: {
+    custom: {
+      code: {
+        required: '请输入你的代码' // messages can be strings as well.
+      }
+    }
+  }
+}
+Validator.updateDictionary(dict)
 
 export default {
   name: 'problem-detail',
@@ -139,9 +158,9 @@ export default {
     .info-wrapper {
       height: 25px;
       line-height: 25px;
-      .contributor {
-        
+      .contributor {      
         float: left;
+        // padding-left: 20px;
         .avatar {
           float: left;
           width: 25px;
@@ -153,6 +172,10 @@ export default {
           display: block;
           float: left;
           line-height: 25px;
+          color: #666;
+          .author {
+            color: #666;
+          }
         }
       }
       .limit-wrapper {
@@ -166,6 +189,10 @@ export default {
           &.memory-limit {
             float: right;
           }
+          .limit_label {
+            color: #666;
+            font-weight: 600;
+          }
           .limit_content {
             margin-left: 5px;
             padding: 0 10px;
@@ -177,15 +204,20 @@ export default {
         }
       }
     }
-  .desc {
-    margin-top: 10px;
-  }
-  .input_sample, .output_sample {
+  .desc-item {
+    &.desc {
+      margin-top: 10px;
+    }
     .text {
-      border-radius: 2px;
+      padding: 5px 20px;
+    }
+  }
+  .input-sample, .output-sample {
+    .text {
+      border-radius: 5px;
       font-size: 14px;
-      padding: 20px;
-      background-color: #f4faff;
+      padding: 10px 20px;
+      background: rgba(162, 226, 214, 0.08);
       line-height: 20px;
       white-space: pre-wrap;
       color: #454c59;
@@ -267,6 +299,12 @@ export default {
       resize: none;
       border: 1px solid #AAA;
       padding: 8px 10px;
+    }
+    .warning {
+      float: left;
+      color: red;
+      padding-top: 10px;
+      padding-left: 10px;
     }
     .submitButton {
       float: right;

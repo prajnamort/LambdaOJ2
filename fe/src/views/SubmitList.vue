@@ -1,26 +1,24 @@
 <template>
 	<div class="submit-list">
-    <h2>Submit History</h2>
+    <h2>提交历史</h2>
     <table>
       <thead>
         <tr>
-          <th>Submit</th>
-          <th>Score</th>
-          <th>Problem</th>
-          <th>Language</th>
-          <th>Submit Time</th>
+          <th>#</th>
+          <th>分数</th>
+          <th>题目</th>
+          <th>语言</th>
+          <th>提交时间</th>
         </tr>
       </thead>
       <tbody>
         <template v-for="item in displayItems">
-          <tr>
+          <tr @click="goTo(item.id)">
             <td>
               <router-link :to="'/submit/' + item.id">{{ item.id }}</router-link >
             </td>
-            <td>{{ item.score }}</td>
-            <td>
-              <router-link :to="'/problem/' + item.problem">{{ item.problem }}</router-link >
-            </td>
+            <td>{{ item.score | scoreRange }}</td>
+            <td>{{ item.problem_title }}</td>
             <td>{{ item.language }}</td>
             <td>{{ item.create_time | localtime }}</td>
           </tr>
@@ -62,6 +60,9 @@ export default {
           reject(error)
         })
       })
+    },
+    goTo(val) {
+      this.$router.push({path: '/submit/'+ val.toString()})
     }
   },
   created() {
@@ -75,12 +76,27 @@ export default {
   table {
     border-collapse: collapse;
     width: 100%;
+    margin: 0 auto;
     thead {
       tr {
         line-height: 40px;
         padding: 8px;
         th {
-          width: 20%;
+          &:first-child {
+            width: 10%;
+          }
+          &:nth-child(2) {
+            width: 10%;
+          }
+          &:nth-child(3) {
+            width: 40%;
+          }
+          &:nth-child(4) {
+            width: 10%;
+          }
+          &:last-child {
+            width: 20%;
+          }
         }
       }
     }
@@ -88,17 +104,34 @@ export default {
       tr {
         line-height: 25px;
         td {
-          width: 20%;
           padding: 8px;
           text-align: center;
-          border-bottom: 1px solid #ddd;
+          &:first-child {
+            width: 10%;
+          }
+          &:nth-child(2) {
+            width: 10%;
+          }
+          &:nth-child(3) {
+            width: 40%;
+          }
+          &:nth-child(4) {
+            width: 10%;
+          }
+          &:last-child {
+            width: 20%;
+          }
           a {
+            color: #5cb85c;
             display: block;
           }
         }
+        &:nth-child(odd) {
+          background-color: #f5f5f5;
+        }
         &:hover {
-          background: rgba(0, 0, 0, 0.05);
-          font-weight: 700;
+          cursor: pointer;
+          background: rgba(162, 226, 214, 0.08);
         }
       }
     }

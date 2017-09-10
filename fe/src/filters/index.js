@@ -78,3 +78,23 @@ export function toFixedTwo(val) {
   }
   return Number(val).toFixed(2)
 }
+
+export function scoreRange(score) {
+  if (arguments.length === 0) {
+    return null
+  }
+  if(typeof score === "object") {
+    return '判题未完成'
+  }
+  if(score === 100) {
+    return 'COOL'
+  } else if(score >= 80) {
+    return 'FINE'
+  } else if(score >=50) {
+    return 'SAFE'
+  } else if(score > 0) {
+    return 'SAD'
+  } else {
+    return 'WORST'
+  }
+}

@@ -15,7 +15,7 @@
       </thead>
       <tbody>
         <template v-for="item in displayItems">
-          <tr>
+          <tr @click="goTo(item.number)">
             <td>
               <router-link :to="'/problem/' + item.number">{{ item.number }}</router-link >
             </td>
@@ -73,6 +73,9 @@ export default {
           reject(error)
         })
       })
+    },
+    goTo(val) {
+      this.$router.push({path: '/problem/'+ val.toString()})
     }
   },
   // created() {
@@ -90,7 +93,6 @@ export default {
       width: 480px;
       height: auto;
       margin: 20px 220px 30px;
-
     }
   }
   table {
@@ -147,6 +149,7 @@ export default {
           background-color: #f5f5f5;
         }
         &:hover {
+          cursor: pointer;
           background: rgba(162, 226, 214, 0.08);
           // font-weight: 700;
         }

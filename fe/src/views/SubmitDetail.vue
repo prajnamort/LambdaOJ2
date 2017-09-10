@@ -33,7 +33,7 @@
             <div class="text">{{ detail.score | toFixedTwo }}</div>
           </div>
         </div>        
-        <div class="run-results">           
+        <div class="run-results">
           <table>
             <thead>
               <tr>
@@ -47,8 +47,8 @@
               <tr v-for="(item, index) in detail.run_results">
                 <td>{{ index + 1 }}</td>
                 <td>
-                  <!-- <span class="bold" :class="getColorType(item[0])">{{ item[0] | sampleStatus }}</span> -->
-                  <span class="bold" :class="getColorRandom()">{{ item[0] | sampleStatus }}</span>
+                  <span class="bold" :class="getColorType(item[0])">{{ item[0] | sampleStatus }}</span>
+                  <!-- <span class="bold" :class="getColorRandom()">{{ item[0] | sampleStatus }}</span> -->
                 </td>
                 <td>{{ item[1] | milliseconds }}</td>
                 <td>{{ item[2] }} KB</td>
@@ -60,13 +60,18 @@
       </template>
       <template v-else>
         <div v-if="detail.error_message" class="error-message">
-          <span class="title bold large">编译失败</span>
-          <pre>{{ detail.error_message }}</pre>
+          <span class="title bold large">Compilation Error</span>
+          <div class="message-wrapper">
+            <pre>{{ detail.error_message }}</pre>
+          </div>
         </div>
       </template>
     </template>
     <div class="code">
-      <div class="title bold">Code</div>
+      <div class="caption-wrapper clearfix">
+        <div class="title bold">Code</div>
+        <div class="language small">{{ detail.language }}</div>
+      </div>
       <template v-if="detail.code">
         <pre v-highlightjs><code class="content cpp">{{ detail.code }}</code></pre>
       </template>
@@ -365,8 +370,34 @@ export default {
   }
   .error-message {
     margin-top: 20px;
+    .title {
+      display: block;
+    }
+    .message-wrapper {
+      background: #fdf6e3;
+      padding: 0 10px;
+      border-radius: 5px;
+      max-height: 300px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
   }
   .code {
+    .title {
+      float: left;
+    }
+    .language {
+      margin: 20px 10px 10px;
+      float: left;
+      padding: 0 10px;
+      height: 22px;
+      line-height: 22px;
+      background-color: #f5f5f5;
+      color: rgba(0, 0, 0, 0.4);
+      border-radius: 10px;
+      font-weight: 600;
+      text-align: center;
+    }
     .content {
       display: block;
       width: 100%;

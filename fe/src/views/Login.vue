@@ -1,15 +1,18 @@
 <template>
   <div class="content-wrapper login">
+    <div class="logo-wrapper">
+      <img class="logo-long" src="../../static/logo_long.png">
+    </div>
     <div class="login-form-wrapper">
-      <div class="error" v-if="!correct">用户名或密码错误</div>
+      <div class="error" v-show="!correct">用户名或密码错误</div>
       <form class="login-form" :model="loginForm" v-on:submit.prevent="handleLogin">
         <div class="row">
           <input v-validate="'required'" name="username" type="text" v-model.trim="loginForm.username" placeholder="用户名"/>
-          <div class="warning"  v-if="errors.has('username')">{{ errors.first('username') }}</div>
+          <div class="warning" v-if="errors.has('username')">{{ errors.first('username') }}</div>
         </div>
         <div class="row">
           <input v-validate="'required'" name="password" type="password" v-model.trim="loginForm.password" placeholder="密码"/>
-          <div class="warning"  v-if="errors.has('password')">{{ errors.first('password') }}</div>
+          <div class="warning" v-if="errors.has('password')">{{ errors.first('password') }}</div>
         </div>
         <input class="submit-button" type="submit" value="登录"/>
       <!-- 
@@ -34,7 +37,7 @@
 import { Validator } from 'vee-validate'
 
 const dict = {
-  cn: {
+  en: {
     custom: {
       username: {
         required: '请输入用户名' // messages can be strings as well.
@@ -46,7 +49,6 @@ const dict = {
   }
 }
 Validator.updateDictionary(dict)
-Validator.setLocale('cn')
 
 export default {
   name: 'login',
@@ -81,16 +83,19 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less">
 .login {
-  .login-form-wrapper {
-    margin-top: 150px;
-    .error {
-      text-align: center;
-      margin-bottom: 10px;
-      color: red;
+  .logo-wrapper {
+    margin: 20px auto;
+    .logo-long {
+      width: 300px;
+      height: auto;
+      margin: 20px 305px 0px;
     }
+  }
+  .login-form-wrapper {
+    padding-top: 20px;
+    position: relative;
     .login-form {
       width: 330px;
       margin: 0 auto;
