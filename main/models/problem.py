@@ -9,7 +9,9 @@ from django.utils import timezone
 
 from ckeditor_uploader.fields import RichTextUploadingField
 
-from main.utils.compare_utils import validate_compare_file, get_compare_func
+from main.utils.compare_utils import (validate_compare_file,
+                                      get_compare_func,
+                                      default_compare_func)
 
 
 class Problem(models.Model):
@@ -94,11 +96,7 @@ class Problem(models.Model):
         if self.compare_file:
             return get_compare_func(self.compare_file.path)
         else:
-            def _compare_func(answer, output):
-                with open(answer, 'r') as f1, open(output, 'r') as f2:
-                    result = (f1.read() == f2.read())
-                return result
-            return _compare_func
+            return default_compare_func
 
     @property
     def testdata_num(self):
