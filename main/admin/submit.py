@@ -11,6 +11,7 @@ class SubmitAdmin(admin.ModelAdmin):
               'judge_status', 'compile_status', 'run_results',
               'error_message', 'score', 'create_time',)
     readonly_fields = ('create_time',)
+    search_fields = ('=id', '^user__username',)
 
     # 禁止普通 staff 修改任何 Submit 内容（只能查看）。
     def get_readonly_fields(self, request, obj=None):
