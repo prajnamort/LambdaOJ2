@@ -1,6 +1,7 @@
 import os
 import json
 import psycopg2
+import raven
 from unipath import FSPath as Path
 
 
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'corsheaders',
+    'raven.contrib.django.raven_compat',
 
     'main',
 ]
@@ -293,6 +295,19 @@ JUDGE_BASE_DIR = os.environ['JUDGE_BASE_DIR']
 SWAGGER_SETTINGS = {
     'DOC_EXPANSION': 'list',
 }
+
+
+# Sentry
+
+SENTRY_DSN = os.environ.get('SENTRY_DSN', None)
+
+if SENTRY_DSN:
+    RAVEN_CONFIG = {
+        'dsn': SENTRY_DSN,
+        # If you are using git, you can also automatically configure the
+        # release based on the git info.
+        'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
+    }
 
 
 # ENV specific settings
