@@ -87,8 +87,14 @@
                 <td>
                   <span class="bold" :class="getColorType(item[0])">{{ item[0] | sampleStatus }}</span>
                 </td>
-                <td>{{ item[1] | milliseconds }}</td>
-                <td>{{ item[2] }} KB</td>
+                <template v-if="isAccept(item[0])">
+                  <td>{{ item[1] | milliseconds }}</td>
+                  <td>{{ item[2] }} KB</td>
+                </template>
+                <template v-else>
+                  <td>-</td>
+                  <td>-</td>
+                </template>
               </tr>
             </tbody>
           </table>
@@ -163,6 +169,9 @@ export default {
           reject(error)
         })
       })
+    },
+    isAccept(item) {
+      return (item === 0)
     },
     getProblemTitle(number) {
       return new Promise((resolve, reject) => {

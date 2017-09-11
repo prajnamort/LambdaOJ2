@@ -1,33 +1,38 @@
 <template>
 	<div class="submit-list">
     <h2>提交历史</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>分数</th>
-          <th>题目</th>
-          <th>语言</th>
-          <th>提交时间</th>
-        </tr>
-      </thead>
-      <tbody>
-        <template v-for="item in displayItems">
-          <tr @click="goTo(item.id)">
-            <td>
-              <router-link :to="'/submit/' + item.id">{{ item.id }}</router-link >
-            </td>
-            <td>
-              <!-- <span :class="getClassType(item.score)">{{ item.score | scoreRange }}</span> -->
-              {{ item.score | scoreDisplay(item.judge_status) }}
-            </td>
-            <td>{{ item.problem_title }}</td>
-            <td>{{ item.language }}</td>
-            <td>{{ item.create_time | localtime }}</td>
+    <template v-if="hasDisplayItems">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>分数</th>
+            <th>题目</th>
+            <th>语言</th>
+            <th>提交时间</th>
           </tr>
-        </template>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <template v-for="item in displayItems">
+              <tr @click="goTo(item.id)">
+                <td>
+                  <router-link :to="'/submit/' + item.id">{{ item.id }}</router-link >
+                </td>
+                <td>
+                  <!-- <span :class="getClassType(item.score)">{{ item.score | scoreRange }}</span> -->
+                  {{ item.score | scoreDisplay(item.judge_status) }}
+                </td>
+                <td>{{ item.problem_title }}</td>
+                <td>{{ item.language }}</td>
+                <td>{{ item.create_time | localtime }}</td>
+              </tr>
+          </template>
+        </tbody>
+      </table>
+    </template>
+    <template v-else-if="hasDisplayItems === false">
+      <div class="empty-msg">你还没提交过代码哦~</div>
+    </template>
     <pagination :totalPage="pageNum" @goPage="getList"></pagination>
   </div>
 </template>
@@ -46,8 +51,11 @@ export default {
         page_size: 50
       },
       pageNum: 0,
-      displayItems: []
+      displayItems: [],
+      hasDisplayItems: null
     }
+  },
+  computed: {
   },
   methods: {
     getList(val) {
@@ -57,7 +65,9 @@ export default {
           const data = response.data
           console.log(data)
           this.displayItems = data.results
+          console.log(this.displayItems.length)
           this.pageNum = Math.ceil(data.count / this.pageInfo.page_size)
+          this.hasDisplayItems = Boolean(this.displayItems.length > 0)
           resolve()
         }).catch(error => {
           reject(error)
@@ -84,10 +94,10 @@ export default {
     goTo(val) {
       this.$router.push({path: '/submit/'+ val.toString()})
     }
-  },
-  created() {
-    this.getList(this.pageInfo.page)
   }
+  // created() {
+  //   this.getList(this.pageInfo.page)
+  // }
 }
 </script>
 
@@ -131,19 +141,6 @@ export default {
           }
           &:nth-child(2) {
             width: 12%;
-            .cool {
-              // color: white;
-              font-weight: 700;
-              // color: #fff72d;
-              // background-color: rgba(122, 35, 0, 0.8);
-              color: rgba(122, 35, 0, 0.8);
-              background-color: rgba(250, 245, 50, 0.8);
-              padding: 0 10px;
-              border-radius: 10px;
-            }
-            .worst {
-
-            }
           }
           &:nth-child(3) {
             width: 35%;
@@ -168,6 +165,9 @@ export default {
         }
       }
     }
+  }
+  .empty-msg {
+    padding-left: 20px;
   }
 }
 </style>

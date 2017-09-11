@@ -77,7 +77,7 @@ export default {
     goTo(val) {
       this.$router.push({path: '/problem/'+ val.toString()})
     }
-  },
+  }
   // created() {
   //   this.getList()
   // }
