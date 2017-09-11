@@ -34,7 +34,7 @@ class Submit(models.Model):
     JUDGE_STATUS_CHOICES = ((JUDGE_PENDING, '等待中'),
                             (JUDGE_JUDGING, '判题中'),
                             (JUDGE_COMPLETED, '已完成判题'),
-                            (JUDGE_COMPLETED, '判题失败'),)
+                            (JUDGE_FAILED, '判题失败'),)
 
     COMPILE_OK = 'O'
     COMPILE_ERROR = 'E'
