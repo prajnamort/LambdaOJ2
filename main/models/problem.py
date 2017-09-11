@@ -92,13 +92,13 @@ class Problem(models.Model):
     @property
     def compare_func(self):
         if self.compare_file:
-            compare_func = get_compare_func(self.compare_file.path)
+            return get_compare_func(self.compare_file.path)
         else:
-            def compare_func(answer, output):
+            def _compare_func(answer, output):
                 with open(answer, 'r') as f1, open(output, 'r') as f2:
                     result = (f1.read() == f2.read())
                 return result
-        return compare_func
+            return _compare_func
 
     @property
     def testdata_num(self):
