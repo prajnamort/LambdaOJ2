@@ -10,6 +10,7 @@
         </router-link>
         <div class="nav-items">
           <template v-if="is_login">
+            <a class="nav-item" :href="adminUrl" v-if="is_staff" target="_blank">管理中心</a>
             <router-link class="nav-item" to="/profile">
 <!--               <span class="icon clearfix">
                 <icon name="username" scale="3"></icon>
@@ -33,6 +34,11 @@ import { getToken } from '@/utils/auth' // 验权
 
 export default {
   name: 'app',
+  data () {
+    return {
+      adminUrl: __ADMIN__
+    }
+  },
   computed: {
     key() {
       return this.$route.name !== undefined ? this.$route.name + +new Date() : this.$route + +new Date()
@@ -42,6 +48,19 @@ export default {
         return true
       }
       return false
+    },
+    is_staff() {
+      if(typeof this.$store.getters.is_staff === "object") {
+        this.$store.dispatch('GetUserInfo').then(() => {
+          if(this.$store.getters.is_staff) {
+            return true
+          }
+          return false
+        }).catch(() => {
+          return false
+        })
+      }
+      return this.$store.getters.is_staff
     }
   },
   methods: {
