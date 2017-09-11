@@ -19,7 +19,7 @@ class User(AbstractUser):
         error_messages={
             'unique': '拥有该邮箱的用户已存在。',
         },
-        blank=True,)
+        blank=True, null=True,)
     mobile = models.CharField(
         verbose_name='手机号',
         max_length=11,
@@ -32,3 +32,8 @@ class User(AbstractUser):
         verbose_name='学号',
         max_length=20,
         blank=True,)
+
+    def save(self, *args, **kwargs):
+        if self.email == '':
+            self.email = None
+        super().save(*args, **kwargs)
