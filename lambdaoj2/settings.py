@@ -295,18 +295,16 @@ SWAGGER_SETTINGS = {
 }
 
 
-# CORS
-
-CORS_ORIGIN_ALLOW_ALL = True
-
-
 # ENV specific settings
 
 if PROJECT_ENV == 'LOCAL':
     DEBUG = True
+    CORS_ORIGIN_ALLOW_ALL = True
 
 elif PROJECT_ENV == 'DEV':
     DEBUG = True
+    CORS_ORIGIN_ALLOW_ALL = True
 
 elif PROJECT_ENV == 'PROD':
     DEBUG = False
+    CORS_ORIGIN_ALLOW_ALL = False
