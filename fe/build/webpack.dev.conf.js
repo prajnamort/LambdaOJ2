@@ -20,7 +20,8 @@ module.exports = merge(baseWebpackConfig, {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': config.dev.env,
-      __API__: "'http://lambdaoj2:8000/api/'"
+      __API__: "'http://lambdaoj2:8000/api/'",
+      __ADMIN__: "'http://lambdaoj2:8000/admin/'"
     }),
     // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
     new webpack.HotModuleReplacementPlugin(),
