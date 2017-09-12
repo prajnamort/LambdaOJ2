@@ -11,6 +11,7 @@ const PersonalInfo = () => import('../views/PersonalInfo.vue')
 const SubmitDetail = () => import('../views/SubmitDetail.vue')
 const SubmitList = () => import('../views/SubmitList.vue')
 const Profile = () => import('../views/Profile.vue')
+const ErrorPage404 = () => import('../views/404.vue')
 
 export default new Router({
   routes: [
@@ -23,6 +24,11 @@ export default new Router({
     	path: '/login',
       name: 'Login',
     	component: Login
+    },
+    {
+      path: '/404',
+      name: 'ErrorPage404',
+      component: ErrorPage404
     },
     {
       path: '/problem/:number(\\d+)',

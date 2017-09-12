@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from '@/router'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
@@ -27,6 +28,8 @@ service.interceptors.response.use(
     console.log(error.response)// for debug
     if (error.response.status === 429 || error.response.status >= 500) {
     	alert(error.response.data.detail)
+    } else if (error.response.status === 404) {
+      router.push({ path: '/404' })
     }
     return Promise.reject(error)
   }
