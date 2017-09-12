@@ -30,6 +30,11 @@ service.interceptors.response.use(
     	alert(error.response.data.detail)
     } else if (error.response.status === 404) {
       router.push({ path: '/404' })
+    } else if (error.response.status === 401) {
+      store.dispatch('FeLogOut').then(() => {
+        location.reload()
+        router.push({ path: '/login' })
+      })
     }
     return Promise.reject(error)
   }
