@@ -5,18 +5,11 @@
         <router-link to="/" exact>
           <img class="logo" src="../static/logo.png">
         </router-link>
-        <router-link class="nav-item-left" to="/" exact>
-          首页
-        </router-link>
+        <span class="nav-item-left" @click="refreshIndex()">首页</span>
         <div class="nav-items">
           <template v-if="is_login">
             <a class="nav-item" :href="adminUrl" v-if="is_staff" target="_blank">管理中心</a>
-            <router-link class="nav-item" to="/profile">
-<!--               <span class="icon clearfix">
-                <icon name="username" scale="3"></icon>
-              </span> -->
-              <span>个人中心</span>
-            </router-link>
+            <span class="nav-item" @click="refreshProfile()" to="/profile">个人中心</span>
             <span class="nav-item" @click="logout">退出</span>
           </template>
           <template v-else> 
@@ -69,6 +62,20 @@ export default {
         this.$router.push({ path: '/' })
         location.reload()// 为了重新实例化vue-router对象 避免bug
       })
+    },
+    refreshIndex() {
+      if(this.$route.path === '/') {
+        location.reload()
+      } else {
+        this.$router.push({ path: '/' })
+      }
+    },
+    refreshProfile() {
+      if(this.$route.path === '/profile') {
+        location.reload()
+      } else {
+        this.$router.push({ path: '/profile' })
+      }
     }
   }
 }

@@ -65,7 +65,6 @@ export default {
           const data = response.data
           console.log(data)
           this.displayItems = data.results
-          console.log(this.displayItems.length)
           this.pageNum = Math.ceil(data.count / this.pageInfo.page_size)
           this.hasDisplayItems = Boolean(this.displayItems.length > 0)
           resolve()
