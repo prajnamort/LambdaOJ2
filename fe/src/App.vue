@@ -20,8 +20,8 @@
     </header>
     <router-view :key="key"></router-view>
     <footer>
-      <span>Copyright © 2017 Prajnamort, Yaoxiaoqi & Kainwen.</span>
-      <a href="https://groups.google.com/forum/#!forum/hacklambda" target="_blank">Contact us.</a>
+      <span>Copyright © 2017 LambdaHackers.</span>
+      <a href="mailto:lambdahackers@googlegroups.com">Contact us.</a>
     </footer>
   </div>
 </template>
