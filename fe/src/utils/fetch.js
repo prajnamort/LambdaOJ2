@@ -17,7 +17,9 @@ service.interceptors.request.use(config => {
   }
   return config
 }, error => {
-  console.log(error) // for debug
+  if (process.env.NODE_ENV === 'development') {  // for debug
+    console.log(error)
+  }
   Promise.reject(error)
 })
 
@@ -25,7 +27,9 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
   response => response,
   error => {
-    console.log(error.response)// for debug
+    if (process.env.NODE_ENV === 'development') {  // for debug
+      console.log(error.response)
+    }
     if (error.response.status === 429 || error.response.status >= 500) {
     	alert(error.response.data.detail)
     } else if (error.response.status === 404) {

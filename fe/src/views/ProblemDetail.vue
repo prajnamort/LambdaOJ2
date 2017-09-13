@@ -112,7 +112,6 @@ export default {
         getProblemDetail(number).then(response => {
           const data = response.data
           this.detail = data
-          console.log(this.detail)
           resolve()
         }).catch(error => {
           reject(error)
@@ -135,7 +134,6 @@ export default {
     }
   },
   created() {
-    // console.log(this.$route.params.number);
     this.problemNum = this.$route.params.number
     this.getDetail(this.problemNum)
   }

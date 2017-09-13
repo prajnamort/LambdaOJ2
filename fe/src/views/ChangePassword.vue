@@ -74,7 +74,6 @@ export default {
         location.reload()// 为了重新实例化vue-router对象 避免bug
       }).catch((error) => {
         this.errorDict = error.response.data
-        console.log(this.errorDict.non_field_errors)
       })
     }
   }

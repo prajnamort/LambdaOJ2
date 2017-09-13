@@ -39,7 +39,6 @@ const user = {
         loginByUsername(username, userInfo.password).then(response => {
           const data = response.data
           setToken(data.auth_token)
-          console.log(data)
           commit('SET_AUTH_TOKEN', data.auth_token)
           resolve()
         }).catch(error => {
@@ -86,13 +85,11 @@ const user = {
       })
     },
     ChangePassword({commit}, passwordInfo) {
-      console.log(passwordInfo)
       return new Promise((resolve, reject) => {
         changePassword(passwordInfo.current_password,
                        passwordInfo.new_password,
                        passwordInfo.re_new_password).then(response => {
           const data = response.data
-          console.log(data)
           resolve()
         }).catch(error => {
           reject(error)

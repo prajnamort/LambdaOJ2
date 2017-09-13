@@ -44,7 +44,6 @@ export default {
       } else {
         this.$store.dispatch('GetUserInfo').then(() => {
           this.curUser = this.$store.getters.user
-          console.log(this.curUser)
         }).catch(() => {
           // this.loading = false
           this.curUser = {}

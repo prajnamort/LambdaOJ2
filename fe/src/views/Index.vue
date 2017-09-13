@@ -65,7 +65,6 @@ export default {
       return new Promise((resolve, reject) => {
         getProblemList(this.pageInfo.page, this.pageInfo.page_size).then(response => {
           const data = response.data
-          console.log(data)
           this.displayItems = data.results
           this.pageNum = Math.ceil(data.count / this.pageInfo.page_size)
           resolve()

@@ -72,8 +72,6 @@ export default {
           this.$router.push({ path: '/' })
         }
       }).catch((error) => {
-        // this.loading = false
-        console.log(error.response)
         if(error.response.status == 400) {
           this.correct = false
         }

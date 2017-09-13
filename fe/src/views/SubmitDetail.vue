@@ -158,7 +158,6 @@ export default {
         getSubmitDetail(id).then(response => {
           const data = response.data
           this.detail = data
-          console.log(this.detail)
           if(this.detail.judge_status !== 'C' && 
              this.detail.judge_status !== 'F') {
             this.pollDetail(id)
@@ -178,7 +177,6 @@ export default {
         getProblemDetail(number).then(response => {
           const data = response.data
           this.problemDetail = data
-          console.log(this.problemDetail)
           resolve()
         }).catch(error => {
           reject(error)
