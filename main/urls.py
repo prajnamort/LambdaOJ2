@@ -1,4 +1,5 @@
 from django.conf.urls import url, include
+from django.conf import settings
 
 from main import views
 
@@ -6,11 +7,6 @@ from main import views
 urlpatterns = [
     url(r'^$',
         views.index.main_index, name='index'),
-
-    url(r'^swagger/$',
-        views.api_utils.swagger_view, name='swagger'),
-    url(r'^swagger.json$',
-        views.api_utils.swagger_json, name='swagger_json'),
 
     url(r'^api/', include([
         url(r'^$',
@@ -38,3 +34,13 @@ urlpatterns = [
             views.user.MySubmitList.as_view(), name='my-submit-list'),
     ])),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        url(r'^api/$',
+            views.api_utils.api_root, name='api_root'),
+        url(r'^swagger/$',
+            views.api_utils.swagger_view, name='swagger'),
+        url(r'^swagger.json$',
+            views.api_utils.swagger_json, name='swagger_json'),
+    ]
