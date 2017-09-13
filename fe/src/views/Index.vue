@@ -149,7 +149,6 @@ export default {
         &:hover {
           cursor: pointer;
           background: rgba(162, 226, 214, 0.08);
-          // font-weight: 700;
         }
       }       
     }

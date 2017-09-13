@@ -59,8 +59,8 @@ export default {
 
 <style lang="less">
 .personal-info {
-  @lamdbaGreen: #5cb85c;
-  @lamdbaGreenDarker: #55a955;
+  @lambdaGreen: #5cb85c;
+  @lambdaGreenDarker: #55a955;
   .info-wrapper {
     padding-left: 20px;
     .item {
@@ -77,9 +77,9 @@ export default {
         display: block;
         float: left;
         padding-left: 20px;
-        color: @lamdbaGreen;
+        color: @lambdaGreen;
         &:hover {
-          color: @lamdbaGreenDarker;
+          color: @lambdaGreenDarker;
         }
       }
     }

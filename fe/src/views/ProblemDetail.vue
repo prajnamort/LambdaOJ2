@@ -142,8 +142,8 @@ export default {
 
 <style lang="less">
 .problem-detail {
-  @lamdbaGreen: #5cb85c;
-  @lamdbaGreenDarker: #55a955;
+  @lambdaGreen: #5cb85c;
+  @lambdaGreenDarker: #55a955;
   padding: 20px;
     .title {
       padding-top: 20px;
@@ -194,7 +194,7 @@ export default {
           .limit_content {
             margin-left: 5px;
             padding: 0 10px;
-            background-color: @lamdbaGreen;
+            background-color: @lambdaGreen;
             color: white;
             border-radius: 10px;
             font-weight: 600;
@@ -222,7 +222,7 @@ export default {
     }
   }
   .submit-wrapper {
-    margin: 30px auto 0;
+    margin: 30px auto 40px;
     .title-wrapper {
       .title {
         margin: 0;
@@ -246,13 +246,13 @@ export default {
               position: absolute;
               visibility: hidden;
               &:checked ~ .check {
-                border: 1px solid @lamdbaGreen;
+                border: 1px solid @lambdaGreen;
               }
               &:checked ~ .check::before{
-                background: @lamdbaGreen;
+                background: @lambdaGreen;
               }
               &:checked ~ .content{
-                color: @lamdbaGreen;
+                color: @lambdaGreen;
               }
             }
             .check{
@@ -310,14 +310,14 @@ export default {
       text-align: center;
       height: 40px;
       line-height: 40px;
-      background-color: @lamdbaGreen;
+      background-color: @lambdaGreen;
       color: white;
       border-radius: 5px;
       margin-top: 10px;
       transition: all .25s ease-in-out;
       &:hover {
         cursor: pointer;
-        background-color: @lamdbaGreenDarker;
+        background-color: @lambdaGreenDarker;
       }
     }
   }

@@ -257,18 +257,18 @@ export default {
 
 <style lang="less">
 .submit-detail {
-  @lamdbaGreen: #5cb85c;
-  @lamdbaGreenDarker: #55a955;
+  @lambdaGreen: #5cb85c;
+  @lambdaGreenDarker: #55a955;
   padding: 20px;
   .problem-title {
-    color: @lamdbaGreen;
+    color: @lambdaGreen;
     &:hover {
-      color: @lamdbaGreenDarker;
+      color: @lambdaGreenDarker;
     }
     &:visited {
-      color: @lamdbaGreen;
+      color: @lambdaGreen;
       &:hover {
-        color: @lamdbaGreenDarker;
+        color: @lambdaGreenDarker;
       }
     }
   }
@@ -397,7 +397,7 @@ export default {
                 border-radius: 13px;
               }
               .green {
-                background-color: @lamdbaGreen;
+                background-color: @lambdaGreen;
               }
               .red {
                 background-color: #ff5555;
@@ -432,6 +432,7 @@ export default {
     }
   }
   .code {
+    padding-bottom: 40px;
     .title {
       float: left;
     }

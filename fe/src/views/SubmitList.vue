@@ -101,6 +101,7 @@ export default {
 
 <style lang="less">
 .submit-list {
+  padding-bottom: 40px;
   table {
     border-collapse: collapse;
     width: 100%;

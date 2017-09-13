@@ -19,6 +19,10 @@
       </nav>
     </header>
     <router-view :key="key"></router-view>
+    <footer>
+      <span>Copyright © 2017 Prajnamort, Yaoxiaoqi & Kainwen.</span>
+      <a href="https://groups.google.com/forum/#!forum/hacklambda" target="_blank">Contact us.</a>
+    </footer>
   </div>
 </template>
 
@@ -83,17 +87,20 @@ export default {
 
 <style lang="less">
 @contentWidth: 960px;
-body {
+html, body {
   padding: 0;
   margin: 0;
+  height: 100%;
 }
 * {
   box-sizing: border-box;
 }
 a {
   text-decoration: none;
+  color: #5cb85c;
   &:hover {
     text-decoration: none;
+    color: #55a955;
   }
 }
 .clearfix::after {
@@ -117,6 +124,8 @@ a {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+  min-height: 100%;
+  position: relative;
   header {
     @headerHeight: 60px;
     @bgColor: #39424e;
@@ -181,12 +190,21 @@ a {
       }
     }
   }
+  footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 30px;
+    text-align: center;
+    font-size: 80%;
+    color: #666;
+  }
   .content-wrapper {
     @media only screen and (max-width : @contentWidth) {
         min-width: @contentWidth;
     }
     max-width: @contentWidth;
-    margin: 0 auto 50px;
+    margin: 0 auto;
     padding: 20px;
     font-family: '微软雅黑', 'Microsoft Yahei', 'Avenir', Helvetica, Arial, sans-serif;
   }
