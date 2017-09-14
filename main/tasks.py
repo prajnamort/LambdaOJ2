@@ -73,7 +73,7 @@ def judge_submit(submit_pk):
                 submit.score = 100.0 * (accepted / total)
         elif compile_status == oj.consts.COMPILE_ERROR:
             submit.compile_status = Submit.COMPILE_ERROR
-            submit.error_message = results
+            submit.error_message = results.replace('\x00', '')
             submit.score = 0.0
         submit.judge_status = Submit.JUDGE_COMPLETED
         submit.save()
