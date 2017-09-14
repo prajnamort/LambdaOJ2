@@ -1,6 +1,6 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import NotFound
 
 from rules import test_rule
 
@@ -28,4 +28,4 @@ class SubmitDetail(generics.RetrieveAPIView):
 
     def check_object_permissions(self, request, submit):
         if not test_rule('can_view_submit', request.user, submit):
-            raise PermissionDenied
+            raise NotFound
