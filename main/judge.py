@@ -1,28 +1,49 @@
-from django.conf import settings
-
-from oj import Judge
-from main.models import Problem
+import json
+import docker
 
 
-class DefaultJudge(Judge):
+class JudgeError(Exception):
+    pass
 
-    def __init__(self, **kwargs):
-        problem = Problem.objects.get(pk=kwargs['problem_id'])
-        self.problem = problem
-        self.testdatas = list(problem.testdata_set.order_by('order'))
-        kwargs['sample_num'] = len(self.testdatas)
-        kwargs['time_limit'] = problem.time_limit
-        kwargs['mem_limit'] = problem.memory_limit
-        kwargs['judge_exe'] = settings.JUDGE_BIN
-        kwargs['compile_code_exe'] = settings.COMPILE_CODE_BIN
-        super().__init__(**kwargs)
 
-    def get_test_input_by_id(self, id):
-        return self.testdatas[id].input_file.path
+def run_judge_in_docker(image,
+                        src_path,
+                        compiler,
+                        test_case_dir,
+                        sample_num,
+                        mem_limit,
+                        time_limit,
+                        volumes,
+                        max_wait_time=60,
+                        default_check=True,
+                        ta_check_file=""):
+    client = docker.from_env()
+    command = ["/usr/local/bin/docker_judge",
+               "--src", src_path,
+               "--compiler", compiler,
+               "--work_dir", "/tmp",
+               "--test_case_dir", test_case_dir,
+               "--sample_num", str(sample_num),
+               "--mem_limit", str(mem_limit),
+               "--time_limit", str(time_limit)]
+    if default_check:
+        command.append("--default_check")
+    else:
+        command.extend(["--ta_check_file", ta_check_file])
 
-    def get_std_answer_by_id(self, id):
-        return self.testdatas[id].output_file.path
 
-    def check_answer(self, std_answer, submit_output):
-        compare_func = self.problem.compare_func
-        return compare_func(std_answer, submit_output)
+    c = client.containers.run(image=image,
+                              command=command,
+                              user="runoj",
+                              privileged=True,
+                              detach=True,
+                              volumes=volumes)
+
+    try:
+        c.wait(timeout=max_wait_time)
+        r = json.loads(c.logs().decode("utf8"))
+        c.remove(force=True)
+        return r
+    except:
+        c.remove(force=True)
+        raise JudgeError()    

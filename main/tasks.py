@@ -7,7 +7,7 @@ import os
 import shutil
 
 import oj
-from main.judge import DefaultJudge
+from main.judge import run_judge_in_docker
 from main.models import Submit
 
 
@@ -41,21 +41,11 @@ def judge_submit(submit_pk):
             raise CheckConditionError('Submit has already been judged.')
         submit.judge_status = Submit.JUDGE_JUDGING
         submit.save()
-    # 开始判题
-    judge = JudgeClass(
-        problem_id=str(problem.id),
-        work_dir=work_dir,
-        source_code=source_code,
-        compiler_name=submit.get_compiler_name(),)
-    try:
-        (compile_status, results) = judge.run()
-    except Exception:
-        shutil.rmtree(work_dir)  # 删除工作目录
-        submit.judge_status = Submit.JUDGE_FAILED
-        submit.save()
-    else:
-        shutil.rmtree(work_dir)  # 删除工作目录
 
+    #prepare arguments
+    #TODO
+    (compile_status, results) = run_judge_in_docker(image, xxxx, xxx, xxx)
+     
     with transaction.atomic():
         submit.refresh_from_db()
         if submit.judge_status != Submit.JUDGE_JUDGING:
