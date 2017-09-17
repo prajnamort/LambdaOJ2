@@ -1,6 +1,9 @@
-from django.db import models
+from django.db import models, transaction
+from django.utils import timezone
 from django.core import validators
 from django.contrib.auth.models import AbstractUser
+
+from main.utils.string_utils import generate_noise
 
 
 class User(AbstractUser):
@@ -23,7 +26,7 @@ class User(AbstractUser):
     mobile = models.CharField(
         verbose_name='手机号',
         max_length=11,
-        blank=True,
+        blank=True, null=True,
         validators=[validators.RegexValidator(
             r'^\d{11}$', '请输入合法的手机号。', 'invalid'
         )],
@@ -36,4 +39,48 @@ class User(AbstractUser):
     def save(self, *args, **kwargs):
         if self.email == '':
             self.email = None
+        if self.mobile == '':
+            self.mobile = None
         super().save(*args, **kwargs)
+
+
+class MultiUserUpload(models.Model):
+    """批量用户上传"""
+
+    class Meta:
+        verbose_name = '批量用户上传'
+        verbose_name_plural = verbose_name
+        ordering = ['-id']
+
+    csv_content = models.TextField(
+        verbose_name='用户信息',
+        help_text='CSV 格式："username,student_id,email,mobile"，其中 username 字段为必填项')
+    results = models.TextField(
+        verbose_name='创建结果',
+        help_text='CSV 格式："username,password"')
+    create_time = models.DateTimeField(
+        verbose_name='创建时间',
+        default=timezone.now,)
+
+    def __str__(self):
+        return '%s' % self.id
+
+    def save(self, *args, **kwargs):
+        with transaction.atomic():
+            lines = self.csv_content.splitlines()
+            lines = [line.strip() for line in lines if line.strip()]
+            results = []
+            for line in lines:
+                fields = [field.strip() for field in line.split(',') if field.strip()]
+                username, student_id, email, mobile = fields + ['']*(4 - len(fields))
+                user = User.objects.create(
+                    username=username,
+                    student_id=student_id,
+                    email=email,
+                    mobile=mobile,)
+                password = generate_noise(8)
+                user.set_password(password)
+                user.save()
+                results.append('{},{}'.format(username, password))
+            self.results = '\n'.join(results)
+            super().save(*args, **kwargs)

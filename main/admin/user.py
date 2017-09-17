@@ -4,7 +4,7 @@ from django.contrib.auth.admin import (
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from main.models import User
+from main.models import User, MultiUserUpload
 
 
 @admin.register(User)
@@ -62,3 +62,15 @@ class UserAdmin(OrigUserAdmin):
         if not self.has_change_permission(request, user):
             raise PermissionDenied
         return super().user_change_password(request, id, form_url)
+
+
+@admin.register(MultiUserUpload)
+class MultiUserUploadAdmin(admin.ModelAdmin):
+    list_display = ('id', 'create_time',)
+    fields = ('csv_content', 'results', 'create_time',)
+    readonly_fields = ('results', 'create_time',)
+
+    def get_readonly_fields(self, request, obj=None):
+        if obj:
+            return self.fields
+        return self.readonly_fields
