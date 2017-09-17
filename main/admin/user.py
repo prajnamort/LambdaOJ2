@@ -29,11 +29,11 @@ class UserAdmin(OrigUserAdmin):
         }),
     )
     list_display = ('id', 'username', 'email', 'mobile', 'student_id',
-                    'groups_str', 'is_staff', 'is_superuser')
+                    'is_active', 'is_staff', 'groups_str', 'is_superuser')
     list_display_links = ('id', 'username')
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
     search_fields = ('username', 'email', 'mobile', 'student_id')
-    ordering = ('-is_superuser', '-is_staff')
+    ordering = ('-is_active', '-is_staff', '-is_superuser')
 
     def groups_str(self, obj):
         return ','.join([g.name for g in obj.groups.all()])
