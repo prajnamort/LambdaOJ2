@@ -1,5 +1,4 @@
 import os
-from shlex import shlex
 from importlib.machinery import SourceFileLoader
 
 from django.core.exceptions import ValidationError
@@ -34,16 +33,3 @@ def validate_compare_file(value):
         raise ValidationError(message)
     else:
         _cleanup()
-
-def default_compare_func(answer, output):
-    with open(answer, 'r') as f1, open(output, 'r') as f2:
-        s1 = shlex(instream=f1, posix=True)
-        s2 = shlex(instream=f2, posix=True)
-        while True:
-            t1, t2 = s1.get_token(), s2.get_token()
-            if t1 is None and t2 is None:
-                return True
-            if t1 is None or t2 is None:
-                return False
-            if t1 != t2:
-                return False

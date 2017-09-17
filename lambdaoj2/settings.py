@@ -283,9 +283,9 @@ REST_FRAMEWORK = {
 
 # Judge
 
-JUDGE_BIN_DIR = os.environ['JUDGE_BIN_DIR']
-JUDGE_BIN = os.path.join(JUDGE_BIN_DIR, 'judge')
-COMPILE_CODE_BIN = os.path.join(JUDGE_BIN_DIR, 'compile_code')
+JUDGE_DOCKER_IMAGE = os.environ['JUDGE_DOCKER_IMAGE']
+JUDGE_DOCKER_USER = os.environ['JUDGE_DOCKER_USER']
+JUDGE_DOCKER_COMMAND = os.environ['JUDGE_DOCKER_COMMAND']
 
 JUDGE_BASE_DIR = os.environ['JUDGE_BASE_DIR']
 
