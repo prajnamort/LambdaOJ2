@@ -1,11 +1,13 @@
 from django.db import transaction, OperationalError
-from django.db.models import F
+from django.db.models import F, Q
 from django.conf import settings
+from django.utils import timezone
 from celery import shared_task
 
 import os
 import shutil
 import string, random
+from datetime import timedelta
 
 import oj
 from main.judge import run_judge_in_docker, JudgeError
@@ -95,3 +97,14 @@ def judge_submit(submit_pk):
         if submit.score == 100.0:
             problem.accept_cnt = F('accept_cnt') + 1
         problem.save()
+
+
+@shared_task
+def auto_cancel_unfinished_submits():
+    past_time = timezone.now() - timedelta(seconds=3600)
+    unfinished_submits = Submit.objects.filter(Q(judge_status=Submit.JUDGE_PENDING) |
+                                               Q(judge_status=Submit.JUDGE_JUDGING))\
+                                       .filter(create_time__lte=past_time)
+    for submit in unfinished_submits:
+        submit.judge_status = Submit.JUDGE_FAILED
+        submit.save()
