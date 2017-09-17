@@ -56,7 +56,7 @@ def judge_submit(submit_pk):
             mem_limit=problem.memory_limit,
             time_limit=problem.time_limit,
             volumes=volumes,
-            max_wait_time=max(60, problem.time_limit + 30),
+            max_wait_time=max(60, problem.time_limit * problem.testdata_num + 30),
             default_check=default_check,
             ta_check_file=ta_check_file,)
         shutil.rmtree(judge_dir)
