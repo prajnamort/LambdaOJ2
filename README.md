@@ -131,9 +131,9 @@ pip install -r requirements.txt
 
 #### Celery
 
-* 运行：`celery multi start lambdaoj2 -A lambdaoj2 -l info --pidfile="/tmp/celery_lambdaoj2.pid" --logfile="/var/log/celery/lambdaoj2.log"`
-* 重启：`celery multi restart lambdaoj2 -A lambdaoj2 -l info --pidfile="/tmp/celery_lambdaoj2.pid" --logfile="/var/log/celery/lambdaoj2.log"`
-* 关闭：`celery multi stop lambdaoj2 -A lambdaoj2 -l info --pidfile="/tmp/celery_lambdaoj2.pid" --logfile="/var/log/celery/lambdaoj2.log"`
+* 运行：`celery multi start lambdaoj2 -A lambdaoj2 -B -l info --pidfile="/tmp/celery_lambdaoj2.pid" --logfile="/var/log/celery/lambdaoj2.log"`
+* 重启：`celery multi restart lambdaoj2 -A lambdaoj2 -B -l info --pidfile="/tmp/celery_lambdaoj2.pid" --logfile="/var/log/celery/lambdaoj2.log"`
+* 关闭：`celery multi stop lambdaoj2 -A lambdaoj2 -B -l info --pidfile="/tmp/celery_lambdaoj2.pid" --logfile="/var/log/celery/lambdaoj2.log"`
 
 #### www 与 admin 站点
 

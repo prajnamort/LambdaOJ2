@@ -5,6 +5,7 @@
 .vagrant/
 /Vagrantfile
 lambdaoj.ini
+celerybeat-schedule
 
 ###Emacs###
 *~

@@ -3,6 +3,7 @@ import json
 import psycopg2
 import raven
 from unipath import FSPath as Path
+from datetime import timedelta
 
 
 PROJECT_ENV = os.environ['PROJECT_ENV']
@@ -104,6 +105,12 @@ CELERY_ACCEPT_CONTENT = ['json']
 
 CELERY_BROKER_URL = os.environ['CELERY_BROKER_URL']
 
+CELERY_BEAT_SCHEDULE = {
+    'auto_cancel_unfinished_submits': {
+        'task': 'main.tasks.auto_cancel_unfinished_submits',
+        'schedule': timedelta(seconds=600),
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
