@@ -6,12 +6,12 @@ Models:
 
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 
+import os
 from ckeditor_uploader.fields import RichTextUploadingField
 
-from main.utils.compare_utils import (validate_compare_file,
-                                      get_compare_func,
-                                      default_compare_func)
+from main.utils.compare_utils import validate_compare_file
 
 
 class Problem(models.Model):
@@ -92,13 +92,6 @@ class Problem(models.Model):
         super().save(*args, **kwargs)
 
     @property
-    def compare_func(self):
-        if self.compare_file:
-            return get_compare_func(self.compare_file.path)
-        else:
-            return default_compare_func
-
-    @property
     def testdata_num(self):
         """测试数据总数"""
         return self.testdata_set.count()
@@ -109,6 +102,18 @@ class Problem(models.Model):
             return '%.2f%%' % 0.0
         else:
             return '%.2f%%' % (100.0 * (self.accept_cnt / self.submit_cnt))
+
+    def prepare_problem_dir(self, problem_dir):
+        for i, testdata in enumerate(self.testdata_set.all()):
+            input_file = os.path.join(problem_dir, '%s.in' % i)
+            output_file = os.path.join(problem_dir, '%s.ans' % i)
+            with open(input_file, 'wb') as in_f, open(output_file, 'wb') as out_f:
+                in_f.write(testdata.input_file.read())
+                out_f.write(testdata.output_file.read())
+        if self.compare_file:
+            compare_file = os.path.join(problem_dir, 'compare.py')
+            with open(compare_file, 'wb') as f:
+                f.write(self.compare_file.read())
 
 
 class TestData(models.Model):

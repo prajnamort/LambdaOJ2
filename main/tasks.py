@@ -5,10 +5,13 @@ from celery import shared_task
 
 import os
 import shutil
+import string, random
 
 import oj
-from main.judge import DefaultJudge
+from main.judge import run_judge_in_docker, JudgeError
 from main.models import Submit
+from main.utils.string_utils import generate_noise
+from main.utils.directory import remkdir
 
 
 class CheckConditionError(Exception):
@@ -16,23 +19,22 @@ class CheckConditionError(Exception):
     pass
 
 
-@shared_task(autoretry_for=(oj.judge.NeedRejudgeError,
-                            OperationalError,
-                            CheckConditionError),
-             retry_kwargs={'countdown': 10, 'max_retries': 5})
+@shared_task(autoretry_for=(OperationalError, CheckConditionError, JudgeError),
+             retry_kwargs={'countdown': 10, 'max_retries': 3})
 def judge_submit(submit_pk):
     submit = Submit.objects.get(pk=submit_pk)
     problem = submit.problem
-    JudgeClass = DefaultJudge
 
-    # 初始化工作目录
-    work_dir = os.path.join(settings.JUDGE_BASE_DIR, str(submit.id))
-    if os.path.exists(work_dir):
-        shutil.rmtree(work_dir)
-    os.mkdir(work_dir)
-    source_code = os.path.join(work_dir, 'source%s' % submit.get_codefile_suffix())
-    with open(source_code, 'w') as f:
-        f.write(submit.code)
+    # 准备文件夹与映射关系
+    judge_dir = os.path.join(settings.JUDGE_BASE_DIR,
+                             '%s_%s' % (str(submit.id), generate_noise(6)))
+    remkdir(judge_dir)
+    submit.copy_code_to_dir(judge_dir)
+    problem.prepare_problem_dir(judge_dir)
+    docker_judge_dir = '/' + generate_noise(8)
+    volumes = {judge_dir: {'bind': docker_judge_dir, 'mode': 'ro'}}
+    default_check = bool(not problem.compare_file)
+    ta_check_file = '' if default_check else os.path.join(docker_judge_dir, 'compare.py')
 
     # 更新状态为判题中
     with transaction.atomic():
@@ -41,20 +43,31 @@ def judge_submit(submit_pk):
             raise CheckConditionError('Submit has already been judged.')
         submit.judge_status = Submit.JUDGE_JUDGING
         submit.save()
-    # 开始判题
-    judge = JudgeClass(
-        problem_id=str(problem.id),
-        work_dir=work_dir,
-        source_code=source_code,
-        compiler_name=submit.get_compiler_name(),)
+
     try:
-        (compile_status, results) = judge.run()
-    except Exception:
-        shutil.rmtree(work_dir)  # 删除工作目录
+        (compile_status, results) = run_judge_in_docker(
+            image=settings.JUDGE_DOCKER_IMAGE,
+            src_path=os.path.join(docker_judge_dir, submit.codefile_name),
+            compiler=submit.get_compiler_name(),
+            test_case_dir=docker_judge_dir,
+            sample_num=problem.testdata_num,
+            mem_limit=problem.memory_limit,
+            time_limit=problem.time_limit,
+            volumes=volumes,
+            max_wait_time=max(60, problem.time_limit + 30),
+            default_check=default_check,
+            ta_check_file=ta_check_file,)
+        shutil.rmtree(judge_dir)
+    except JudgeError as e:
+        shutil.rmtree(judge_dir)
+        submit.judge_status = Submit.JUDGE_PENDING
+        submit.save()
+        raise e
+    except Exception as e:
+        shutil.rmtree(judge_dir)
         submit.judge_status = Submit.JUDGE_FAILED
         submit.save()
-    else:
-        shutil.rmtree(work_dir)  # 删除工作目录
+        raise e
 
     with transaction.atomic():
         submit.refresh_from_db()

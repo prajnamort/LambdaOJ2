@@ -3,8 +3,11 @@ Models:
     - Submit:  提交。
 """
 
+import os
+
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 from django.contrib.postgres.fields import JSONField
 
 
@@ -92,6 +95,15 @@ class Submit(models.Model):
             return '.c'
         elif self.language in [Submit.CPP03, Submit.CPP11]:
             return '.cpp'
+
+    @property
+    def codefile_name(self):
+        return 'source%s' % self.get_codefile_suffix()
+
+    def copy_code_to_dir(self, code_dir):
+        code_path = os.path.join(code_dir, self.codefile_name)
+        with open(code_path, 'w') as f:
+            f.write(self.code)
 
     def get_compiler_name(self):
         return self.language.lower()

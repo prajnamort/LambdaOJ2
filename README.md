@@ -6,6 +6,7 @@
 
 * vagrant (https://www.vagrantup.com/downloads.html)
 * virtualbox (https://www.virtualbox.org/wiki/Downloads)
+* docker (https://www.docker.com/community-edition)
 
 ### 添加 vagrant box
 
@@ -65,13 +66,11 @@ vagrant up
 192.168.27.10   lambdaoj2
 ```
 
-### 安装 libLambdaOJ2
+### 拉取判题用的 docker image
 
-此外，判题需要使用 libLambdaOJ2 库，请参照：
-[https://github.com/kainwen/liblambdaOJ2](https://github.com/kainwen/liblambdaOJ2)
-进行安装。
-（仅需安装库本身，不要安装 Python3 API。）
-（cmake 路径前缀默认使用 `/usr/local` ）
+```bash
+docker pull kainwen/lambdaoj:v1.0
+```
 
 
 ## 本地开发流程
