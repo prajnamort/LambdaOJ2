@@ -251,6 +251,9 @@ export default {
   created() {
     this.id = this.$route.params.id
     this.getDetail(this.id)
+  },
+  beforeDestroy() {
+    clearInterval(this.poll)
   }
 }
 </script>
@@ -428,7 +431,7 @@ export default {
       border-radius: 5px;
       max-height: 300px;
       overflow-y: auto;
-      overflow-x: hidden;
+      overflow-x: auto;
     }
   }
   .code {
