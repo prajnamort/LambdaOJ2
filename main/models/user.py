@@ -78,7 +78,8 @@ class MultiUserUpload(models.Model):
                     student_id=student_id,
                     email=email,
                     mobile=mobile,)
-                password = generate_noise(8)
+                # password = generate_noise(8)
+                password = username
                 user.set_password(password)
                 user.save()
                 results.append('{},{}'.format(username, password))
