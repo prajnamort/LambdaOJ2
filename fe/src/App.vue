@@ -185,6 +185,7 @@ a {
     bottom: 0;
     width: 100%;
     height: 30px;
+    line-height: 30px;
     text-align: center;
     font-size: 80%;
     color: #666;
