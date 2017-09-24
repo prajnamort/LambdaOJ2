@@ -126,6 +126,7 @@ export default {
             padding-left: 40px;
             padding-right: 60px;
             width: 12%;
+            text-align: right;
           }
           &:last-child {
             width: 35%;
