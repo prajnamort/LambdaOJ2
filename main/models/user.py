@@ -78,6 +78,7 @@ class MultiUserUpload(models.Model):
                 fields = [field.strip() for field in line.split(',')]
                 assert len(fields) == 4
                 username, student_id, email, mobile = fields
+                assert username
                 user = User.objects.create(
                     username=username,
                     student_id=student_id,

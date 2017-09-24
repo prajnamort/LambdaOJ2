@@ -12,6 +12,8 @@ def validate_multiuser_csv(value):
             if len(fields) != 4:
                 raise ValidationError('格式错误，字段必须为 4 个，非必填可留空')
             username, student_id, email, mobile = fields
+            if not username:
+                raise ValidationError('用户名不可为空')
             if User.objects.filter(username=username).exists():
                 raise ValidationError('用户名 {} 已存在'.format(username))
             if User.objects.filter(email=email).exists():
