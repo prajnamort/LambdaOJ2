@@ -4,6 +4,7 @@ from django.core import validators
 from django.contrib.auth.models import AbstractUser
 
 from main.utils.string_utils import generate_noise
+from main.utils.user_utils import validate_multiuser_csv
 
 
 class User(AbstractUser):
@@ -34,13 +35,15 @@ class User(AbstractUser):
     student_id = models.CharField(
         verbose_name='学号',
         max_length=20,
-        blank=True,)
+        blank=True, null=True,)
 
     def save(self, *args, **kwargs):
         if self.email == '':
             self.email = None
         if self.mobile == '':
             self.mobile = None
+        if self.student_id == '':
+            self.student_id = None
         super().save(*args, **kwargs)
 
 
@@ -54,6 +57,7 @@ class MultiUserUpload(models.Model):
 
     csv_content = models.TextField(
         verbose_name='用户信息',
+        validators=[validate_multiuser_csv],
         help_text='CSV 格式："username,student_id,email,mobile"，其中 username 字段为必填项')
     results = models.TextField(
         verbose_name='创建结果',
@@ -71,8 +75,9 @@ class MultiUserUpload(models.Model):
             lines = [line.strip() for line in lines if line.strip()]
             results = []
             for line in lines:
-                fields = [field.strip() for field in line.split(',') if field.strip()]
-                username, student_id, email, mobile = fields + ['']*(4 - len(fields))
+                fields = [field.strip() for field in line.split(',')]
+                assert len(fields) == 4
+                username, student_id, email, mobile = fields
                 user = User.objects.create(
                     username=username,
                     student_id=student_id,
