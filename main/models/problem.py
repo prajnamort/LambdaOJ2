@@ -6,7 +6,7 @@ Models:
 
 from django.db import models
 from django.utils import timezone
-from django.conf import settings
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 import os
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -24,6 +24,7 @@ class Problem(models.Model):
 
     number = models.PositiveIntegerField(
         verbose_name='题目编号',
+        validators=[MinValueValidator(1000), MaxValueValidator(9999999)],
         unique=True,)
     title = models.CharField(
         verbose_name='标题',
