@@ -94,6 +94,16 @@ export default {
   .login-form-wrapper {
     padding-top: 20px;
     position: relative;
+    .error {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 10px;
+      color: red;
+      font-size: 80%;
+      left: 0;
+      top: -10px;
+    }
     .login-form {
       width: 330px;
       margin: 0 auto;

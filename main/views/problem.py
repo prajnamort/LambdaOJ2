@@ -14,9 +14,9 @@ class ProblemList(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         if test_rule('can_access_unreleased_problems', user):
-            return Problem.objects.all()
+            return Problem.objects.filter(is_deleted=False)
         else:
-            return Problem.objects.filter(released=True)
+            return Problem.objects.filter(is_deleted=False).filter(released=True)
 
 
 class ProblemDetail(generics.RetrieveAPIView):

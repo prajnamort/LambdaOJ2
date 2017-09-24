@@ -33,7 +33,7 @@ class UserAdmin(OrigUserAdmin):
     list_display_links = ('id', 'username')
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
     search_fields = ('username', 'email', 'mobile', 'student_id')
-    ordering = ('-is_active', '-is_staff', '-is_superuser')
+    ordering = ('-is_active', '-is_staff', '-is_superuser', 'id')
 
     def groups_str(self, obj):
         return ','.join([g.name for g in obj.groups.all()])

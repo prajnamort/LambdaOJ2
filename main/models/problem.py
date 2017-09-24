@@ -57,8 +57,11 @@ class Problem(models.Model):
     released = models.BooleanField(
         verbose_name='是否已发布',
         default=False,
-        help_text='普通学生账号只能看到已发布的题目。',
-        db_index=True,)
+        help_text='普通学生账号只能看到已发布的题目。',)
+    is_deleted = models.BooleanField(
+        verbose_name='禁用',
+        default=False,
+        help_text='使用该字段标记删除。',)
     contributor = models.CharField(
         verbose_name='题目贡献者',
         max_length=40,

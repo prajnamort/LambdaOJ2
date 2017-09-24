@@ -13,13 +13,13 @@ class TestDataInline(admin.TabularInline):
 class ProblemAdmin(admin.ModelAdmin):
     list_display = ('number', 'title', 'time_limit', 'memory_limit',
                     'desc', 'released', 'deadline', 'contributor',
-                    'testdata_num', 'accept_rate')
+                    'testdata_num', 'accept_rate', 'is_deleted',)
     list_display_links = ('number', 'title',)
-    list_editable = ('released', 'contributor',)
+    list_editable = ('released', 'contributor', 'is_deleted',)
     fields = ('number', 'title', 'time_limit', 'memory_limit',
               'desc', 'input_desc', 'output_desc',
               'input_sample', 'output_sample', 'hint',
-              'deadline', 'released', 'contributor',
+              'deadline', 'released', 'is_deleted', 'contributor',
               'create_time', 'submit_cnt', 'accept_cnt', 'compare_file',)
     readonly_fields = ('create_time', 'submit_cnt', 'accept_cnt',)
     inlines = [TestDataInline,]

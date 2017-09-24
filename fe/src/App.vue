@@ -172,16 +172,6 @@ a {
           text-align: right;
           height: @headerHeight;
           line-height: @headerHeight;
-          .icon {
-            display: flex;
-            float: left;
-            vertical-align: middle;
-            align-items: center;
-            justify-content: center;
-            height: 50px;
-            width: 30px;
-            // padding-top: 16px;
-          }
           &:hover {
             cursor: pointer;
             font-weight: 700;

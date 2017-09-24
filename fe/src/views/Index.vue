@@ -17,6 +17,9 @@
         <template v-for="item in displayItems">
           <tr @click="goTo(item.number)">
             <td>
+              <span class="lock-icon" v-if="!item.released">
+                <icon name="lock" scale="2.5" style="color: #bbbbbb;"></icon>
+              </span>
               <router-link :to="'/problem/' + item.number">{{ item.number }}</router-link >
             </td>
             <td>
@@ -65,6 +68,7 @@ export default {
       return new Promise((resolve, reject) => {
         getProblemList(this.pageInfo.page, this.pageInfo.page_size).then(response => {
           const data = response.data
+          console.log(data)
           this.displayItems = data.results
           this.pageNum = Math.ceil(data.count / this.pageInfo.page_size)
           resolve()
@@ -132,6 +136,12 @@ export default {
           &:first-child {
             width: 8%;
             padding-right: 40px;
+            position: relative;
+            .lock-icon {
+              position: absolute;
+              left: 10px;
+              bottom: 2px;
+            }
           }
           &:nth-child(2) {
             width: 45%;
