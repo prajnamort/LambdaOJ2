@@ -14,7 +14,7 @@ class SubmitAdmin(admin.ModelAdmin):
     search_fields = ('=id', '^user__username',)
 
     def detail_link(self, obj):
-        return '<a href="/#/submit/{id}">查看提交详情</a>'.format(id=obj.id)
+        return '<a href="/#/submit/{id}" target="_blank">查看 Submit {id} 详情页</a>'.format(id=obj.id)
     detail_link.allow_tags = True
 
     # 禁止普通 staff 修改任何 Submit 内容（只能查看）。
