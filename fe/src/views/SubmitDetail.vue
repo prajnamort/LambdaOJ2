@@ -88,7 +88,7 @@
                   <span class="bold" :class="getColorType(item[0])">{{ item[0] | sampleStatus }}</span>
                 </td>
                 <template v-if="isAccept(item[0])">
-                  <td>{{ item[1] | milliseconds }}</td>
+                  <td>{{ item[1] }} ms</td>
                   <td>{{ item[2] }} KB</td>
                 </template>
                 <template v-else>
