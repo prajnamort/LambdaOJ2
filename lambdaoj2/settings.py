@@ -205,7 +205,7 @@ CKEDITOR_CONFIGS = {
              'items': ['About']},
         ],
         'toolbar_Custom': [
-            ['Bold', 'Italic', 'TextColor', 'BGColor'],
+            ['Bold', 'Italic', 'TextColor', 'BGColor', 'Subscript', 'Superscript'],
             ['Format', 'Font', 'FontSize'],
             ['JustifyLeft', 'JustifyCenter', 'JustifyRight'],
             ['Image', '-', 'Link', 'HorizontalRule', 'Table'],
