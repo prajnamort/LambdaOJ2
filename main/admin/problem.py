@@ -12,7 +12,7 @@ class TestDataInline(admin.TabularInline):
 @admin.register(Problem)
 class ProblemAdmin(admin.ModelAdmin):
     list_display = ('number', 'title', 'time_limit', 'memory_limit',
-                    'desc', 'released', 'deadline', 'contributor',
+                    'released', 'deadline', 'contributor',
                     'testdata_num', 'accept_rate', 'is_deleted',)
     list_display_links = ('number', 'title',)
     list_editable = ('released', 'contributor', 'is_deleted',)
