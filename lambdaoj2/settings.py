@@ -320,6 +320,11 @@ if SENTRY_DSN:
     }
 
 
+# MISC
+
+APPEND_SLASH = False
+
+
 # ENV specific settings
 
 if PROJECT_ENV == 'LOCAL':

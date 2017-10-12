@@ -7,6 +7,8 @@ from main import views
 urlpatterns = [
     url(r'^$',
         views.index.main_index, name='index'),
+    url(r'^media/(?P<name>.+)$',
+        views.media.serve_media, name='media'),
 
     url(r'^api/', include([
         url(r'^$',
