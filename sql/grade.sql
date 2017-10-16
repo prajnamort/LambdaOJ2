@@ -21,7 +21,7 @@ select
   a.uid,
   a.pid,
   a.sc,
-  (a.sc * (100 - a.cutoff) / 100.0)::float as effect_sc,
+  (a.sc * (100 - 10 * a.cutoff) / 100.0)::float as effect_sc,
   a.sid,
   a.cutoff,
   a.create_time
