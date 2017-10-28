@@ -8,11 +8,13 @@
         <span class="nav-item-left" @click="refreshIndex()">首页</span>
         <div class="nav-items">
           <template v-if="is_login">
+            <router-link class="nav-item" to="/faq">FAQ</router-link>
             <a class="nav-item" :href="adminUrl" v-if="is_staff" target="_blank">管理中心</a>
             <span class="nav-item" @click="refreshProfile()" to="/profile">个人中心</span>
             <span class="nav-item" @click="logout">退出</span>
           </template>
           <template v-else> 
+            <router-link class="nav-item" to="/faq">FAQ</router-link>
             <router-link class="nav-item" to="/login">登录</router-link>
           </template>
         </div>
@@ -119,6 +121,15 @@ a {
 .large {
   font-size: 110%;
 }
+.content-wrapper {
+  @media only screen and (max-width : @contentWidth) {
+    min-width: @contentWidth;
+  }
+  max-width: @contentWidth;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: '微软雅黑', 'Microsoft Yahei', 'Avenir', Helvetica, Arial, sans-serif;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -189,15 +200,6 @@ a {
     text-align: center;
     font-size: 80%;
     color: #666;
-  }
-  .content-wrapper {
-    @media only screen and (max-width : @contentWidth) {
-        min-width: @contentWidth;
-    }
-    max-width: @contentWidth;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: '微软雅黑', 'Microsoft Yahei', 'Avenir', Helvetica, Arial, sans-serif;
   }
 }
 </style>

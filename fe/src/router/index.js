@@ -12,6 +12,7 @@ const SubmitDetail = () => import('../views/SubmitDetail.vue')
 const SubmitList = () => import('../views/SubmitList.vue')
 const Profile = () => import('../views/Profile.vue')
 const ErrorPage404 = () => import('../views/404.vue')
+const Faq = () => import('../views/FAQ.vue')
 
 export default new Router({
   routes: [
@@ -21,9 +22,14 @@ export default new Router({
       component: Index
     },
     {
-    	path: '/login',
+      path: '/login',
       name: 'Login',
-    	component: Login
+      component: Login
+    },
+    {
+      path: '/faq',
+      name: 'FAQ',
+      component: Faq
     },
     {
       path: '/404',
