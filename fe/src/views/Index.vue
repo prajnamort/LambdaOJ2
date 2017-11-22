@@ -3,7 +3,6 @@
     <div class="logo-wrapper">
       <img class="logo-long" src="../../static/logo_long.png">
     </div>
-    <pagination :totalPage="pageNum" @goPage="getList"></pagination>
     <div class="table-wrapper">
       <table>
         <thead>
@@ -33,6 +32,7 @@
         </tbody>
       </table>
     </div>
+    <pagination :totalPage="pageNum" @goPage="getList"></pagination>
   </div>
 </template>
 
@@ -48,7 +48,7 @@ export default {
       msg: 'Welcome to LambdaOJ2!',
       pageInfo: {
         page: 1,
-        page_size: 10
+        page_size: 20
       },
       pageNum: 0,
       displayItems: []
