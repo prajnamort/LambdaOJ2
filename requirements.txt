@@ -46,7 +46,7 @@ six==1.10.0
 traitlets==4.3.2
 Unipath==1.1
 uritemplate==3.0.0
-urllib3==1.22
+urllib3==1.26.5
 vine==1.1.4
 wcwidth==0.1.7
 contextlib2==0.5.5
